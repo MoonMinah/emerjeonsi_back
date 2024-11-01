@@ -285,4 +285,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Intelli J
+application.properties
+
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,intellij,macos,windows,maven,java,react,netbeans
