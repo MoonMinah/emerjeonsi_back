@@ -1,4 +1,6 @@
 HELP.md
+mvnw
+mvnw.cmd
 target/
 .mvn/wrapper/maven-wrapper.jar
 **/src/main/**/target/
@@ -205,6 +207,7 @@ Temporary Items
 *.icloud
 
 ### Maven ###
+pom.xml
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -286,6 +289,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # Intelli J
-emerjeonsiBack/src/main/resources/application.properties
+**/application.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,intellij,macos,windows,maven,java,react,netbeans
