@@ -12,6 +12,7 @@ public class TestController {
     public ModelAndView main() {
         System.out.println("하하히");
         System.out.println("히히히");
+        System.out.println("다시다시");
         return new ModelAndView("mainPage");
     }
 }
