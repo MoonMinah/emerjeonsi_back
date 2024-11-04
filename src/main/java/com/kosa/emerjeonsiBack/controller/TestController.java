@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class TestController {
     @GetMapping({"", "/"})
     public ModelAndView main() {
+        System.out.println("하하하");
         return new ModelAndView("mainPage");
     }
 }
