@@ -1,0 +1,86 @@
+/* style.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+header {
+    text-align: center;
+    background-color: #ff5a5f;
+    padding: 20px;
+    color: white;
+}
+
+.exhibition-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.exhibition-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.exhibition-header h2 {
+    font-size: 2rem;
+    color: #ff5a5f;
+    border-bottom: 3px solid #ff5a5f;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.exhibition-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.exhibition-item {
+    width: calc(25% - 20px);
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.exhibition-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.exhibition-info {
+    padding: 10px;
+}
+
+.exhibition-info h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.exhibition-info p {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+footer {
+    background-color: #333;
+    color: #f5f5f5;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.footer-content p {
+    margin: 5px 0;
+}
