@@ -26,9 +26,9 @@ public class PageController {
 
 
 
-    @GetMapping("/exhibitionDetail1")
+    @GetMapping("/exhibitionDetail")
     public String exhibitionDetailPage() {
-        return "exhibitionDetail1";
+        return "exhibitionDetail";
     }
 
     @GetMapping("/main")
