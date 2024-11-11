@@ -47,6 +47,7 @@ public class MainRestController {
 
             // 비밀번호 암호화 후 저장
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            user.setProvider("origin");
 
             int resultUser = userService.userInsert(user);
             log.info("resultUser = {}", resultUser);
