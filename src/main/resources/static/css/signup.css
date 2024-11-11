@@ -1,0 +1,94 @@
+/* css/signup.css */
+@font-face {
+    font-family: 'jalnan';
+    src: url('../fonts/Jalnan2TTF.ttf') format('truetype');
+}
+
+/* 전체 초기화 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'jalnan', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+}
+
+.signup-container {
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.signup-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #333;
+}
+
+.gender-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+}
+
+.gender-option {
+    display: flex;
+    align-items: center;
+}
+
+.gender-option label {
+    margin-left: 5px;
+    font-size: 16px;
+    color: #555;
+}
+
+.signup-button, .cancel-button {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.signup-button {
+    background-color: #ff5a5a;
+    color: #fff;
+}
+
+.signup-button:hover {
+    background-color: #ff3b3b;
+}
+
+.cancel-button {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.cancel-button:hover {
+    background-color: #c0c0c0;
+}

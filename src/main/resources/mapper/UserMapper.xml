@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosa.emerjeonsiBack.mapper.UserMapper">
+    <select id="selectUserByUserId" parameterType="String" resultType="com.kosa.emerjeonsiBack.dto.User">
+        SELECT * FROM TB_Users_Master WHERE userId = #{userId}
+    </select>
+
+    <select id="existsByUserId" parameterType="String" resultType="boolean">
+        SELECT COUNT(1) > 0 FROM TB_Users_Master WHERE userId = #{userId}
+    </select>
+
+    <insert id="userInsert" parameterType="com.kosa.emerjeonsiBack.dto.User">
+        INSERT INTO TB_Users_Master (userId, password, email, userName, gender, birthday, phone)
+        VALUES (#{userId}, #{password}, #{email}, #{userName}, #{gender}, #{birthday}, #{phone})
+    </insert>
+</mapper>
