@@ -24,26 +24,27 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/user/**").authenticated()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/user/**", "/user/**").authenticated()
+                        .requestMatchers("/api/admin/**", "/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
-                        .loginPage("/api/login")
+                        .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .usernameParameter("userId")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/api/home", false)
+                        .defaultSuccessUrl("/home", false)
                         .permitAll()
                 )
                 .logout(url -> url
-                        .logoutUrl("/api/logout")
-                        .logoutSuccessUrl("/api/login")
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/api/login")
+                        .loginPage("/login")
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
+                        .defaultSuccessUrl("/home", false)
                 );
 
         return http.build();

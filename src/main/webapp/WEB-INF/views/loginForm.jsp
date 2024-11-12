@@ -16,7 +16,7 @@
             <input type="submit" class="login-button" value="로그인">
         </form>
 
-        <a href="/api/signup" class="signup-link">회원 가입</a>
+        <a href="/signup" class="signup-link">회원 가입</a>
         <p class="separator">or</p>
 
         <button class="social-button google-login" onclick="window.location.href='/oauth2/authorization/google'">

@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @Controller
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class UserViewController {
-
+    @GetMapping("")
+    public String user() {
+        return "userForm";
+    }
 }
