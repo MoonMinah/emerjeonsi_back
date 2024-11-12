@@ -45,15 +45,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String userId = oAuth2Response.getProvider() + "_" + oAuth2Response.getProviderId();
         User existData = userMapper.selectUserByUserId(userId);
 
-        String role = null;
+        String role = "ROLE_USER";
 
         if(existData == null) {
             User user = new User();
             user.setUserId(userId);
             user.setPassword(bCryptPasswordEncoder.encode("Qwer1234!"));
-            user.setUserName(oAuth2Response.getName());
             user.setEmail(oAuth2Response.getEmail());
+            user.setUserName(oAuth2Response.getName());
             user.setProvider(oAuth2Response.getProvider());
+            user.setRole(role);
 
             if(registrationId.equals("kakao")) {
                 // OAuth2Response를 KakaoResponse로 캐스팅
