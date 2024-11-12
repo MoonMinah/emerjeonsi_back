@@ -10,6 +10,7 @@
     <div class="signup-container">
         <h2 class="signup-title">회원 가입</h2>
         <form id="signUpForm" action="/api/signup" method="post">
+            <input type="hidden" name="role" value="ROLE_USER">
             <input type="text" placeholder="아이디" name="userId" class="input-field" required>
             <input type="password" placeholder="비밀번호" name="password" class="input-field" required>
             <input type="email" placeholder="이메일" name="email" class="input-field" required>

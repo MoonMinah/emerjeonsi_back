@@ -53,16 +53,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user.setPassword(bCryptPasswordEncoder.encode("Qwer1234!"));
             user.setEmail(oAuth2Response.getEmail());
             user.setUserName(oAuth2Response.getName());
+            user.setGender(oAuth2Response.getGender());
+            user.setBirthday(oAuth2Response.getBirthday());
+            user.setPhone(oAuth2Response.getPhone());
             user.setProvider(oAuth2Response.getProvider());
             user.setRole(role);
-
-            if(registrationId.equals("kakao")) {
-                // OAuth2Response를 KakaoResponse로 캐스팅
-                KakaoResponse kakaoResponse = (KakaoResponse) oAuth2Response;
-                user.setGender(kakaoResponse.getGender());
-                user.setBirthday(kakaoResponse.getBirthday());
-                user.setPhone(kakaoResponse.getPhone());
-            }
 
             userMapper.userInsert(user);
         } else {

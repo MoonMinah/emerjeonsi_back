@@ -8,12 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @Controller
-@RequestMapping("/api")
 public class MainViewController {
-//    @GetMapping("/home")
-//    public String home() {
-//        return "home";
-//    }
+    @GetMapping("/home")
+    public String main() {
+        return "main";
+    }
 
     @GetMapping("/login")
     public String loginForm() {

@@ -12,4 +12,13 @@ public interface OAuth2Response {
 
     // 사용자 실명(설정된 이름)
     String getName();
+
+    // 사용자 성별
+    String getGender();
+
+    // 사용자 생년월일
+    String getBirthday();
+
+    // 사용자 핸드폰 번호
+    String getPhone();
 }
