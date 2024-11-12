@@ -12,7 +12,7 @@
     </select>
 
     <insert id="userInsert" parameterType="com.kosa.emerjeonsiBack.dto.User">
-        INSERT INTO TB_Users_Master (userId, password, email, userName, gender, birthday, phone, provider)
-        VALUES (#{userId}, #{password}, #{email}, #{userName}, #{gender}, #{birthday}, #{phone}, #{provider})
+        INSERT INTO TB_Users_Master (userId, password, email, userName, gender, birthday, phone, role, provider)
+        VALUES (#{userId}, #{password}, #{email}, #{userName}, #{gender}, #{birthday}, #{phone}, #{role}, #{provider})
     </insert>
 </mapper>
