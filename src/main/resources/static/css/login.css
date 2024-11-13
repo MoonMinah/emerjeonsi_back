@@ -1,0 +1,143 @@
+@font-face {
+    font-family: 'jalnan';
+    src: url('../fonts/Jalnan2TTF.ttf') format('truetype');
+}
+
+/* Reset and container styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'jalnan', sans-serif;
+}
+body {
+    font-family: 'CustomFont', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    margin: 0;
+}
+
+/* Container styling */
+#login-container {
+    width: 90%;
+    max-width: 360px;
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Title and input styles */
+.title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.input-field {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #999;
+}
+
+/* Button styles */
+.login-button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 18px;
+    background-color: #f06262;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.login-button:hover {
+    background-color: #e34b4b;
+}
+.signup-link {
+    display: block;
+    margin-top: 18px;
+    font-size: 14px;
+    color: #333;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Separator and social login button styles */
+.separator {
+    font-size: 14px;
+    color: #777;
+    margin: 14px 0;
+}
+.social-button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.social-button .icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+.google-login {
+    background-color: #4285F4;
+    color: #fff;
+}
+.google-login:hover {
+    background-color: #357ae8;
+}
+.kakao-login {
+    background-color: #FEE500;
+    color: #3C1E1E;
+}
+.kakao-login:hover {
+    background-color: #fddb00;
+}
+
+/* iPhone 13 Mini-specific media query */
+@media (max-width: 375px) {
+    #login-container {
+        width: 100%;
+        max-width: 330px;
+        padding: 16px;
+    }
+    .title {
+        font-size: 20px;
+        margin-bottom: 16px;
+    }
+    .input-field {
+        padding: 12px;
+        font-size: 14px;
+    }
+    .login-button {
+        padding: 12px;
+        font-size: 15px;
+    }
+    .signup-link {
+        font-size: 13px;
+    }
+    .separator {
+        font-size: 13px;
+    }
+    .social-button {
+        padding: 12px;
+        font-size: 15px;
+    }
+}

@@ -291,4 +291,9 @@ $RECYCLE.BIN/
 # Intelli J
 src/main/resources/application.properties
 
+.gitignore
+.gitattributes
+
+.mvn
+
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,intellij,macos,windows,maven,java,react,netbeans
