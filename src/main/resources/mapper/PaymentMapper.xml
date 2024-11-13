@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosa.emerjeonsiBack.mapper.PaymentMapper">
+    <insert id="insertPayment" parameterType="com.kosa.emerjeonsiBack.dto.Payment" useGeneratedKeys="true" keyProperty="paymentNo">
+        INSERT INTO TB_Payment_Master
+        (reservationNo, paymentUid, paymentMethod, paymentStatus, paymentPrice, paymentDate)
+        VALUES (#{reservationNo}, #{paymentUid}, #{paymentMethod}, '결제성공', #{paymentPrice}, CURRENT_TIMESTAMP)
+    </insert>
+
+
+</mapper>

@@ -76,7 +76,7 @@
             text-align: center;
             margin: 20px 0;
         }
-        .button {
+        button {
             padding: 10px 20px;
             background-color: #ff5252;
             color: #fff;
@@ -84,11 +84,13 @@
             border-radius: 5px;
             font-size: 1em;
             cursor: pointer;
+
         }
         .button:hover {
             background-color: #ff3333;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 
@@ -111,13 +113,47 @@
         </div>
         <div class="price">1,000 - 5,000 (원)</div>
         <div class="info">2018.6.19 - 2018.9.30</div>
-    </div>
+        <br>
+        <form id="reservationForm">
+            <label>옵션 선택:</label>
+            <select id="reservationPrice">
+                <option value="5000">성인 5,000원</option>
+                <option value="3000">노인 3,000원</option>
+                <option value="1000">아동 1,000원</option>
+            </select>
 
-    <div class="button-container">
-        <button class="button">예약</button>
+            <label>수량 선택:</label>
+            <select id="reservationQuantity">
+                <option value="1">1매</option>
+                <option value="2">2매</option>
+                <option value="3">3매</option>
+                <option value="4">4매</option>
+            </select>
+            <button type="button" onclick="submitReservation()">예매하기</button>
+        </form>
     </div>
 </div>
-
 </body>
+<script>
+    function submitReservation() {
+        const exhibitionNo = 111; // 예시로 고정된 전시 ID
+        const reservationPrice = parseInt(document.getElementById("reservationPrice").value);
+        const reservationQuantity = parseInt(document.getElementById("reservationQuantity").value);
+
+        axios.post('/api/reservation', {
+            userNo: 1, // 예시 사용자 번호
+            exhibitionNo: exhibitionNo,
+            reservationPrice: reservationPrice,
+            reservationQuantity: reservationQuantity
+        })
+            .then(response => {
+                const reservationId = response.data;
+                console.log("reservationId : " + reservationId);
+                window.location.href = '/reservationDetail?exhibitionNo=' + exhibitionNo+'&reservationPrice=' + reservationPrice + '&reservationQuantity=' + reservationQuantity;
+            })
+            .catch(error => {
+                console.error("Error creating reservation:", error);
+            });
+    }
+</script>
 </html>
-\
