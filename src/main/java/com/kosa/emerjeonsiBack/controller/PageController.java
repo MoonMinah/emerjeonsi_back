@@ -1,42 +1,29 @@
 package com.kosa.emerjeonsiBack.controller;
 
+import com.kosa.emerjeonsiBack.dto.Reservation;
+import com.kosa.emerjeonsiBack.service.ReservationService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @Slf4j
 public class PageController {
-    @GetMapping("/payment")
-    public String paymentPage() {
-        log.info("결제 페이지 호출");
-        return "payment";
-    }
 
-    @GetMapping("/paymentDetail")
-    public String paymentDetailPage() {
-        return "payment";
-    }
+    @Autowired
+    private ReservationService reservationService;
 
-    @GetMapping("/mypage/myReservation")
-    public String myReservationPage() {
-        return "myReservation";
-    }
-
-
-
-    @GetMapping("/exhibitionDetail1")
+    @GetMapping("/exhibitionDetail")
     public String exhibitionDetailPage() {
-        return "exhibitionDetail1";
+        return "exhibitionDetail";
     }
 
-    @GetMapping("/main")
-    public String exhibitionDetailPage2() {
+   /* @GetMapping("/main")
+    public String updateMainPage() {
         return "main";
-    }
-
-
-
-
+    }*/
 }
