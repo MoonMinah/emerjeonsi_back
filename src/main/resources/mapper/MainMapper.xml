@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosa.emerjeonsiBack.mapper.MainMapper">
+        <select id="getAllExhibitions" resultType="com.kosa.emerjeonsiBack.dto.Exhibition">
+                SELECT exhibitionNo,
+                imageUrl,
+                title,
+                cntcInsttNm,
+                startPeriod,
+                endPeriod,
+                adultPrice,
+                infantPrice,
+                seniorPrice
+                FROM TB_Exhibitions_Master;
+        </select>
+
+        <!-- 전시 상세 정보 조회 -->
+        <select id="getExhibitionById" resultType="com.kosa.emerjeonsiBack.dto.Exhibition">
+                SELECT * FROM TB_Exhibitions_Master WHERE exhibitionNo = #{exhibitionNo}
+        </select>
+</mapper>

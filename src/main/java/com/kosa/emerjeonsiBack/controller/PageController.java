@@ -17,6 +17,7 @@ public class PageController {
     @Autowired
     private ReservationService reservationService;
 
+
     @GetMapping("/exhibitionDetail")
     public String exhibitionDetailPage() {
         return "exhibitionDetail";
@@ -26,4 +27,5 @@ public class PageController {
     public String updateMainPage() {
         return "main";
     }*/
+
 }

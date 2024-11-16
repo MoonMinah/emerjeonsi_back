@@ -4,156 +4,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>금호강과 길</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-        }
-        .container {
-            width: 100%;
-            max-width: 375px; /* 아이폰 미니 13 해상도에 맞춤 */
-            margin: 0 auto;
-            background-color: #fff;
-            overflow: hidden;
-        }
-        .header {
-            background-color: #0066cc;
-            color: #fff;
-            padding: 15px;
-            text-align: center;
-            font-size: 1.2em;
-        }
-        .banner {
-            background-color: #3ea6ff;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-        }
-        .banner h1 {
-            font-size: 1.8em;
-            margin: 0;
-        }
-        .banner h2 {
-            font-size: 1.1em;
-            margin: 5px 0;
-        }
-        .banner p {
-            font-size: 0.9em;
-            margin: 10px 0;
-        }
-        .details {
-            padding: 20px;
-        }
-        .details h2 {
-            font-size: 1.4em;
-            margin: 0 0 10px;
-        }
-        .info {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 15px;
-        }
-        .rating {
-            font-size: 0.9em;
-            color: #ffcc00;
-            margin-bottom: 15px;
-        }
-        .description {
-            font-size: 0.9em;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .price {
-            font-size: 1em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-        .button-container {
-            text-align: center;
-            margin: 20px 0;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #ff5252;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-size: 1em;
-            cursor: pointer;
+    <title>전시 상세 페이지</title>
 
-        }
-        .button:hover {
-            background-color: #ff3333;
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="/css/exhibitionDetail.css">
+
 </head>
 <body>
 
-<div class="container">
-    <div class="header">전시회 정보</div>
-
-    <div class="banner">
-        <h1>금호강과 길</h1>
-        <h2>ROADS OF GEUMHOGANG: THE ANCIENT ARTIFACTS</h2>
-        <p>06.19 TUE - 09.30 SUN<br>국립대구박물관 기획전시실 II</p>
+<header class="header">
+    <img src="../img/logo.png" alt="로고" />
+    <div class="search-bar">
+        <input type="text" placeholder="검색" />
+        <span class="filter-icon" onclick="openModal()">⚙️</span>
     </div>
+    <a href="/api/myPage">👤</a>
+</header>
 
-    <div class="details">
-        <h2>금호강과 길</h2>
-        <div class="info">국립대구박물관<br>2018.6.19 - 2018.9.30</div>
-        <div class="rating">★ 5.0</div>
-        <div class="description">
-            (사)한국매장문화재협회와 공동주최로 최근 금호강 유역에서 확인된 선사~고대의 유적과 유물을 소개하고
-            대구-경산-영천을 잇는 물길로서의 금호강과 그 주변에 형성된 고대문화의 특징을 종합적으로 조명하는 전시
+<%--
+
+<!-- 전시목록 배너 -->
+<div class="banner">전시상세</div>
+
+<!-- 최신순과 이름순 버튼 -->
+<div class="sort-options">
+    <button class="active" onclick="sortBy('latest')">최신순</button>
+    <button onclick="sortBy('name')">이름순</button>
+</div>
+--%>
+
+
+    <div class="container">
+    </div>
+        <div class="banner">
         </div>
-        <div class="price">1,000 - 5,000 (원)</div>
-        <div class="info">2018.6.19 - 2018.9.30</div>
-        <br>
-        <form id="reservationForm">
-            <label>옵션 선택:</label>
-            <select id="reservationPrice">
-                <option value="5000">성인 5,000원</option>
-                <option value="3000">노인 3,000원</option>
-                <option value="1000">아동 1,000원</option>
-            </select>
+        <div class="details">
+        </div>
 
-            <label>수량 선택:</label>
-            <select id="reservationQuantity">
-                <option value="1">1매</option>
-                <option value="2">2매</option>
-                <option value="3">3매</option>
-                <option value="4">4매</option>
-            </select>
-            <button type="button" onclick="submitReservation()">예매하기</button>
-        </form>
+<!-- Modal Structure -->
+<div class="modal" id="reservationModal">
+    <div class="modal-close" onclick="closeModal()">×</div>
+    <div class="modal-header">옵션 선택</div>
+    <div class="modal-content">
+        <!-- 선택사항 UI 내용 -->
+        <p>[유효기간: 2024.10.30~2024.11.12]</p>
+        <div>
+            <p>성인 (5,000원)
+                <span class="quantity-selector">
+
+                <button onclick="decrease1()">-</button> <span id="quantity1">0</span> <button onclick="increase1()">+</button>
+            </span>
+            </p>
+            <p>아이 (1,000원)
+                <span class="quantity-selector">
+
+                <button onclick="decrease2()">-</button> <span id="quantity2">0</span> <button onclick="increase2()">+</button>
+            </span>
+            </p>
+            <p>노인 (3,000원)
+                <span class="quantity-selector">
+
+                <button onclick="decrease3()">-</button> <span id="quantity3">0</span> <button onclick="increase3()">+</button>
+            </span>
+            </p>
+        </div>
+
+        <p>총 결제 금액: <span id="totalAmount">(원)</span></p>
+
+        <button class="button" onclick="submitReservation()">예매하기</button>
     </div>
 </div>
-</body>
-<script>
-    function submitReservation() {
-        const exhibitionNo = 111; // 예시로 고정된 전시 ID
-        const reservationPrice = parseInt(document.getElementById("reservationPrice").value);
-        const reservationQuantity = parseInt(document.getElementById("reservationQuantity").value);
 
-        axios.post('/api/reservation', {
-            userNo: 1, // 예시 사용자 번호
-            exhibitionNo: exhibitionNo,
-            reservationPrice: reservationPrice,
-            reservationQuantity: reservationQuantity
-        })
-            .then(response => {
-                const reservationId = response.data;
-                console.log("reservationId : " + reservationId);
-                window.location.href = '/reservationDetail?exhibitionNo=' + exhibitionNo+'&reservationPrice=' + reservationPrice + '&reservationQuantity=' + reservationQuantity;
-            })
-            .catch(error => {
-                console.error("Error creating reservation:", error);
-            });
-    }
-</script>
+
+</body>
+
+    <!-- axios 라이브러리 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/js/main/exhibitionDetail.js"></script>
+
+
 </html>

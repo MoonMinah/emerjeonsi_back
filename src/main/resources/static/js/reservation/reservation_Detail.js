@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     let IMP = window.IMP; // Iamport 객체 초기화
-    IMP.init("0000"); // PortOne 가맹점 식별코드
+    IMP.init(""); // PortOne 가맹점 식별코드
 
     const paymentMethodSelect = document.getElementById('paymentMethodSelect');
     const paymentIcon = document.getElementById('currentPaymentIcon');
@@ -14,6 +14,12 @@ document.addEventListener("DOMContentLoaded", function() {
         let paymentMethod = paymentMethodSelect.value;
         processPayment(paymentMethod);
     });
+
+    function isMobile() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        return /android|iPad|iPhone|iPod/i.test(userAgent);
+    }
+
     function processPayment(paymentMethod) {
         let paymentPG = paymentMethod === 'kakaopay' ? 'kakaopay' : 'html5_inicis';
         let makeMerchantUid = 'ORD' + new Date().getTime();
@@ -24,11 +30,12 @@ document.addEventListener("DOMContentLoaded", function() {
             name: '금호강과 길',
             amount: totalPrice,  // totalPrice 변수를 사용
             buyer_email: 'user@example.com',
-            buyer_name: '홍길동'
+            buyer_name: '홍길동',
+             //...(isMobile() ? { m_redirect_url: "http://192.168.240.7:9400/myReservations" } : {})
         }, function (rsp) {
             if (rsp.success) {
                 // 결제 성공 시 axios로 결제 정보 전송
-                axios.post('/api/reservation-payment', {
+                axios.post(`/api/reservation-payment`, {
                     reservation: {
                         userNo: 1,
                         exhibitionNo: exhibitionNo,  // exhibitionNo 변수를 사용
