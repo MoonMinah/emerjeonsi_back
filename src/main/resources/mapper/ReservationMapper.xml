@@ -4,13 +4,13 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kosa.emerjeonsiBack.mapper.ReservationMapper">
     <insert id="insertReservation" parameterType="com.kosa.emerjeonsiBack.dto.Reservation" useGeneratedKeys="true" keyProperty="reservationNo">
-        INSERT INTO TB_Reservation_Master
+        INSERT INTO TB_Reservations_Master
         (userNo, exhibitionNo, reservationPrice, reservationQuantity, reservationStatus)
         VALUES (#{userNo}, #{exhibitionNo}, #{reservationPrice}, #{reservationQuantity}, '결제대기')
     </insert>
 
     <update id="updateReservationStatus" parameterType="com.kosa.emerjeonsiBack.dto.Reservation">
-        UPDATE TB_Reservation_Master
+        UPDATE TB_Reservations_Master
         SET reservationStatus = #{reservationStatus}
         WHERE reservationNo = #{reservationNo}
     </update>
@@ -59,12 +59,12 @@
     <select id="getReservationsByUserNo" resultMap="reservationResultMap" parameterType="int">
         SELECT
         ex.exhibitionNo, ex.title, ex.cntcInsttNm, ex.issuedDate, ex.description, ex.imageUrl, ex.viewCount,
-        ex.eventSite, ex.contactPoint, ex.startPeriod, ex.endPeriod, ex.updatedEx,
+        ex.eventSite, ex.contactPoint, ex.startPeriod, ex.endPeriod,
         rm.reservationNo, rm.userNo, rm.exhibitionNo, rm.reservationPrice, rm.reservationQuantity, rm.reservationStatus,
         pm.paymentNo, pm.paymentUid, pm.paymentMethod, pm.paymentStatus, pm.paymentPrice, pm.paymentDate
         FROM tb_exhibitions_master ex
-        JOIN tb_reservation_master rm ON ex.exhibitionNo = rm.exhibitionNo
-        JOIN tb_payment_master pm ON rm.reservationNo = pm.reservationNo
+        JOIN tb_reservations_master rm ON ex.exhibitionNo = rm.exhibitionNo
+        JOIN tb_payments_master pm ON rm.reservationNo = pm.reservationNo
         WHERE rm.userNo = #{userNo}
         AND pm.paymentStatus = '결제성공'
         AND rm.reservationStatus = '예매완료';
@@ -74,7 +74,7 @@
     <select id="getMyReservationDetail" resultMap="reservationResultMap" parameterType="int">
         SELECT em.title, em.cntcInsttNm, em.eventSite, em.startPeriod, em.endPeriod, em.adultPrice, em.infantPrice, em.seniorPrice,
         rm.reservationPrice, rm.reservationQuantity
-        FROM tb_exhibitions_master em inner join tb_reservation_master rm
+        FROM tb_exhibitions_master em inner join tb_reservations_master rm
         ON em.exhibitionNo = rm.exhibitionNo
         WHERE rm.reservationNo = #{reservationNo};
     </select>
@@ -83,9 +83,9 @@
     <select id="getMyReservationPaymentDetail" resultMap="reservationResultMap" parameterType="int">
         select em.title, em.cntcInsttNm, em.startPeriod, em.endPeriod, em.adultPrice, em.seniorPrice, em.infantPrice,
         rm.reservationPrice, rm.reservationQuantity, pm.paymentPrice, pm.paymentMethod, pm.paymentDate
-        from tb_exhibitions_master em inner join tb_reservation_master rm
+        from tb_exhibitions_master em inner join tb_reservations_master rm
         on em.exhibitionNo = rm.exhibitionNo
-        inner join tb_payment_master pm
+        inner join tb_payments_master pm
         on rm.reservationNo = pm.reservationNo
         where pm.paymentNo = #{paymentNo};
     </select>

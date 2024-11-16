@@ -1,19 +1,28 @@
 package com.kosa.emerjeonsiBack.controller.main;
 
+import com.kosa.emerjeonsiBack.dto.Exhibition;
 import com.kosa.emerjeonsiBack.dto.User;
+import com.kosa.emerjeonsiBack.service.MainService;
 import com.kosa.emerjeonsiBack.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/api")
 public class MainRestController {
+
+    @Autowired
+    private MainService mainService;
+
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -22,9 +31,24 @@ public class MainRestController {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    @GetMapping("/home")
-    public ResponseEntity<String> main() {
-        return ResponseEntity.ok("환영합니다. 메인 페이지입니다.");
+    @GetMapping("/home/data")
+    public List<Exhibition> getExhibitions() {
+        log.info("Exhibition list API called");
+//        log.info("RestApi : " + mainService.getExhibitionList());
+//        return mainService.getExhibitionList();
+
+        List<Exhibition> result = mainService.getExhibitionList();
+        log.info("RestApi : " + result);
+        return result;
+    }
+
+    // 전시 상세 정보 반환
+    @GetMapping("/home/{exhibitionNo}/data")
+    public Exhibition getExhibitionDetail(@PathVariable("exhibitionNo") Long exhibitionNo) {
+        log.info("Exhibition detail API called for exhibitionNo: " + exhibitionNo);
+        Exhibition exhibition = mainService.getExhibitionById(exhibitionNo);
+        log.info("Exhibition detail: " + exhibition);
+        return exhibition;
     }
 
     @PostMapping("/signup")

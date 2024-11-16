@@ -1,0 +1,27 @@
+@startuml 공공전시 검색 [GDC-SEARCH]
+autonumber
+title 공공전시 검색 [GDC-SEARCH]
+actor Client
+box "GDC-API" #LightBlue
+entity "SearchController" as Controller
+entity "SearchService" as Service
+end box
+database DB
+entity AWS
+Client -> Controller: 공공전시 검색 요청\n- [필수] 전시 번호\n- [옵션] 키워드, 기간 등 검색 필터
+activate Controller
+    Controller -> Service : 공공전시 검색()\n- Client에서 전달한 검색 필터
+    activate Service
+        Service -> DB : 대상 전시 조회()\nTB_Exhibitions_Master\n- exhibitionNo = 전시 번호
+        activate DB
+        Service <-- DB : 대상 전시 정보\nTB_Exhibitions_Master\n- exhibitionNo\n- imageUrl\n- title\n- period\n- price
+        deactivate DB
+        Service -> DB : 검색 필터 적용하여 공공전시 목록 조회()\nTB_Exhibitions_Master\n- exhibitionNo = 전시 번호\n- 키워드, 기간 등 조건 추가
+        activate DB
+        Service <-- DB : 검색된 공공전시 목록\nTB_Exhibitions_Master\n- exhibitionNo\n- imageUrl\n- title\n- period\n- price
+        deactivate DB
+    Controller <-- Service : 검색 결과 전송
+    deactivate Service
+Client <-- Controller : 검색 결과 전송
+deactivate Controller.
+@enduml

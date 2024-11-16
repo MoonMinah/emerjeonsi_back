@@ -7,6 +7,7 @@
                 SELECT exhibitionNo,
                 imageUrl,
                 title,
+                cntcInsttNm,
                 startPeriod,
                 endPeriod,
                 adultPrice,
