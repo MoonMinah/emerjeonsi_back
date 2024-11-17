@@ -4,7 +4,8 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kosa.emerjeonsiBack.mapper.MainMapper">
         <select id="getAllExhibitions" resultType="com.kosa.emerjeonsiBack.dto.Exhibition">
-                SELECT exhibitionNo,
+                SELECT
+                exhibitionNo,
                 imageUrl,
                 title,
                 cntcInsttNm,
@@ -12,8 +13,30 @@
                 endPeriod,
                 adultPrice,
                 infantPrice,
-                seniorPrice
-                FROM TB_Exhibitions_Master;
+                seniorPrice,
+                issuedDate
+                FROM TB_Exhibitions_Master
+                ORDER BY issuedDate DESC; <!-- 최신순 정렬 -->
+        </select>
+
+        <!-- 필터링 검색 -->
+        <select id="searchByFilter"  resultType="com.kosa.emerjeonsiBack.dto.Exhibition">
+                SELECT * FROM TB_Exhibitions_Master
+                <where>
+                        <if test="selectedFilter == 'title'">
+                                AND title LIKE CONCAT('%', #{searchInput}, '%')
+                        </if>
+                        <if test="selectedFilter == 'museum'">
+                                AND cntcInsttNm LIKE CONCAT('%', #{searchInput}, '%')
+                        </if>
+                </where>
+        </select>
+
+        <!-- 이름순 정렬 -->
+        <select id="getExhibitionsByName" resultType="com.kosa.emerjeonsiBack.dto.Exhibition">
+                SELECT exhibitionNo, imageUrl, title, cntcInsttNm, startPeriod, endPeriod, adultPrice, infantPrice, seniorPrice
+                FROM TB_Exhibitions_Master
+                ORDER BY title ASC;
         </select>
 
         <!-- 전시 상세 정보 조회 -->

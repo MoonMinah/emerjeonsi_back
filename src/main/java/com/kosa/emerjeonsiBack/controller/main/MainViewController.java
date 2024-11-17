@@ -22,23 +22,21 @@ public class MainViewController {
 
     @GetMapping("/home")
     public String main() {
-        /*List<Exhibition> exhibitionList = mainService.getExhibitionList();
-        for(int i = 0; i < exhibitionList.size(); i++) {
-//            log.info("mainPage" + exhibitionList.get(i));
-            log.info("mainPage()::" + exhibitionList.get(i));
-        }
-        model.addAttribute("exhibitionList", exhibitionList);*/
-
         log.info("메인 페이지 호출");
 
         return "main";
     }
-    @GetMapping("/home/{exhibitionNo}")
-    public String showExhibitionDetail(@PathVariable("exhibitionNo") Long exhibitionNo, Model model) {
-        Exhibition exhibition = mainService.getExhibitionById(exhibitionNo);
-        model.addAttribute("exhibition", exhibition);
+/*
+    @GetMapping("/home/search?filter=${selectedFilter}&keyword=${searchInput}")
+    public String searchfilter() {
+        log.info("필터링 검색");
 
-        log.info("전시 상세 페이지 호출");
+        return "main";
+    }*/
+
+    @GetMapping("/home/{exhibitionNo}")
+    public String showExhibitionDetail() {
+
         return "exhibitionDetail"; // exhibitionDetail.jsp
     }
 

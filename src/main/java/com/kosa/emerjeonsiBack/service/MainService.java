@@ -22,4 +22,12 @@ public class MainService {
 
         return mainMapper.getExhibitionById(exhibitionNo);
     }
+
+    public List<Exhibition> getExhibitionsByName() {
+        return mainMapper.getExhibitionsByName();
+    }
+
+    public Object searchByFilter(String selectedFilter, String searchInput) {
+        return mainMapper.searchByFilter(selectedFilter, searchInput);
+    }
 }

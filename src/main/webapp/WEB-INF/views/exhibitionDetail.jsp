@@ -12,26 +12,12 @@
 <body>
 
 <header class="header">
-    <img src="../img/logo.png" alt="로고" />
-    <div class="search-bar">
-        <input type="text" placeholder="검색" />
-        <span class="filter-icon" onclick="openModal()">⚙️</span>
-    </div>
+    <a href="/home"><img src="../img/logo.png" alt="로고" /></a>
     <a href="/api/myPage">👤</a>
 </header>
 
-<%--
-
-<!-- 전시목록 배너 -->
-<div class="banner">전시상세</div>
-
-<!-- 최신순과 이름순 버튼 -->
-<div class="sort-options">
-    <button class="active" onclick="sortBy('latest')">최신순</button>
-    <button onclick="sortBy('name')">이름순</button>
-</div>
---%>
-
+<!-- 전시상세 배너 -->
+<div class="bannerText">전시상세</div>
 
     <div class="container">
     </div>
@@ -42,44 +28,50 @@
 
 <!-- Modal Structure -->
 <div class="modal" id="reservationModal">
-    <div class="modal-close" onclick="closeModal()">×</div>
+    <div class="modal-close" onclick="closeModal()">✖</div>
     <div class="modal-header">옵션 선택</div>
     <div class="modal-content">
         <!-- 선택사항 UI 내용 -->
         <p>[유효기간: 2024.10.30~2024.11.12]</p>
+        <br>
         <div>
-            <p>성인 (5,000원)
-                <span class="quantity-selector">
+            <div class="option-row">
+                <p>성인 : 5,000 (원)</p>
+                <div class="quantity-selector">
+                    <button onclick="decrease1()">-</button>
+                    <span id="quantity1">0</span>
+                    <button onclick="increase1()">+</button>
+                </div>
+            </div>
+            <div class="option-row">
+                <p>아이 : 1,000 (원)</p>
+                <div class="quantity-selector">
+                    <button onclick="decrease2()">-</button>
+                    <span id="quantity2">0</span>
+                    <button onclick="increase2()">+</button>
+                </div>
+            </div>
+            <div class="option-row">
+                <p>노인 : 5,000 (원)</p>
+                <div class="quantity-selector">
+                    <button onclick="decrease3()">-</button>
+                    <span id="quantity3">0</span>
+                    <button onclick="increase3()">+</button>
+                </div>
+            </div>
 
-                <button onclick="decrease1()">-</button> <span id="quantity1">0</span> <button onclick="increase1()">+</button>
-            </span>
-            </p>
-            <p>아이 (1,000원)
-                <span class="quantity-selector">
-
-                <button onclick="decrease2()">-</button> <span id="quantity2">0</span> <button onclick="increase2()">+</button>
-            </span>
-            </p>
-            <p>노인 (3,000원)
-                <span class="quantity-selector">
-
-                <button onclick="decrease3()">-</button> <span id="quantity3">0</span> <button onclick="increase3()">+</button>
-            </span>
-            </p>
-        </div>
-
+        <br>
         <p>총 결제 금액: <span id="totalAmount">(원)</span></p>
-
+        <br>
         <button class="button" onclick="submitReservation()">예매하기</button>
+
+        </div>
     </div>
 </div>
-
-
-</body>
 
     <!-- axios 라이브러리 추가 -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/main/exhibitionDetail.js"></script>
 
-
+</body>
 </html>
