@@ -1,3 +1,15 @@
+@font-face {
+    font-family: 'jalnan';
+    src: url('../fonts/Jalnan2TTF.ttf') format('truetype');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'jalnan', sans-serif;
+}
+
 a {
     text-decoration: none;
 }
@@ -8,12 +20,38 @@ body {
     padding: 0;
     background-color: #f9f9f9;
 }
+/* 헤더 스타일 */
+.header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.user-icon {
+    font-size: 20px;
+    color: #888;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
 .container {
     width: 100%;
     max-width: 375px; /* 아이폰 미니 13 해상도에 맞춤 */
     margin: 0 auto;
     background-color: #fff;
     overflow: hidden;
+}
+.content-container {
+    width: 100%;
+    max-width: 375px; /* 아이폰 미니 13 해상도에 맞춤 */
+    margin: 0 auto;
+    background-color: #fff;
+    overflow: hidden;
+    position: relative;
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+    padding: 10px;
 }
 /* 헤더 스타일 */
 .header {
@@ -27,10 +65,36 @@ body {
     width: 30px;
     margin-right: 10px;
 }
+.header a:first-child {
+    margin-right: auto; /* 첫 번째 a 태그는 왼쪽 정렬 */
+}
+
+.header a:last-child {
+    margin-left: auto; /* 두 번째 a 태그는 오른쪽 정렬 */
+}
+
+/* 전시목록 배너 */
+.bannerText{
+    text-align: left;
+    padding: 15px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 1px solid #e0e0e0;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
 .banner {
     /*color: #fff;*/
     text-align: center;
     padding: 20px;
+}
+.banner img {
+    display: block; /* 블록 요소로 변경 */
+    margin: 0 auto; /* 수평 중앙 정렬 */
+    width: 300px; /* 기존 너비 유지 */
+    height: 350px;
 }
 .banner h1 {
     font-size: 1.8em;
@@ -84,10 +148,35 @@ button {
     border-radius: 5px;
     font-size: 1em;
     cursor: pointer;
-
 }
 .button:hover {
     background-color: #ff3333;
+}
+
+/* 콘텐츠 영역 */
+.content-container {
+    position: relative;
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+    padding: 10px;
+}
+.sort-options {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    margin-right: 15px;
+}
+.sort-options button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+}
+.sort-options .active {
+    color: #ff5e5e;
+    font-weight: bold;
 }
 
 /* Modal styles */
@@ -105,13 +194,17 @@ button {
     padding: 20px;
     display: none;
 }
+.modal button{
+    display: flex;
+    justify-content: center
+}
 .modal.active {
     display: block;
 }
 .modal-close {
     text-align: right;
     cursor: pointer;
-    color: #ff5252;
+    color: #888;
     font-size: 1.2em;
 }
 .modal-header {
@@ -121,4 +214,57 @@ button {
 }
 .modal-content {
     padding: 10px 0;
+}
+.quantity-selector {
+    display: flex;
+    justify-content: flex-end; /* 버튼들을 오른쪽으로 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    gap: 5px; /* 버튼 사이 간격 */
+}
+.quantity-selector span {
+     display: inline-block; /* 크기 조정을 위해 block 속성 */
+     width: 30px; /* 고정 너비 설정 */
+     text-align: center; /* 텍스트 가운데 정렬 */
+     font-size: 1em; /* 수량 텍스트 크기 */
+     color: #333; /* 수량 텍스트 색상 */
+ }
+.quantity-selector button {
+    padding: 5px 10px; /* 크기를 작게 조정 */
+    background-color: #e0e0e0; /* 기본 색상 */
+    color: #333; /* 텍스트 색상 */
+    border: 1px solid #ccc; /* 얇은 테두리 추가 */
+    border-radius: 3px; /* 모서리를 조금 둥글게 */
+    font-size: 0.9em; /* 텍스트 크기를 줄임 */
+    cursor: pointer;
+}
+.quantity-selector button:hover {
+    background-color: #d6d6d6; /* 호버 시 색상 변경 */
+}
+/* 옵션 행 정렬 */
+.option-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.option-row p {
+    margin: 0;
+    font-size: 1em;
+    color: #333;
+}
+/* 예매하기 버튼을 모달 안에서 중앙으로 정렬 */
+.modal-content .button {
+    display: block;
+    width: 100%;
+    text-align: center;  /* 버튼을 가운데 정렬 */
+    padding: 10px;
+    background-color: #ff5252;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+}
+.modal-content .button:hover {
+    background-color: #ff3333;
 }

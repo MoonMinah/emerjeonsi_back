@@ -41,6 +41,13 @@ public class MainRestController {
         log.info("RestApi : " + result);
         return result;
     }
+/*    @GetMapping("/home/search?filter=${selectedFilter}&keyword=${searchInput}")
+    public ResponseEntity<?> searchExhibitions(
+            @PathVariable String selectedFilter,
+            @PathVariable String searchInput){
+        return (ResponseEntity<?>) mainService.searchByFilter(selectedFilter, searchInput);
+    }*/
+
 
     // 전시 상세 정보 반환
     @GetMapping("/home/{exhibitionNo}/data")
@@ -49,6 +56,13 @@ public class MainRestController {
         Exhibition exhibition = mainService.getExhibitionById(exhibitionNo);
         log.info("Exhibition detail: " + exhibition);
         return exhibition;
+    }
+    @GetMapping("/home/data/sort")
+    public List<Exhibition> getExhibitionsSorted(@RequestParam("criteria") String criteria) {
+        if ("name".equalsIgnoreCase(criteria)) {
+            return mainService.getExhibitionsByName();
+        }
+        return mainService.getExhibitionList();
     }
 
     @PostMapping("/signup")

@@ -21,6 +21,7 @@ body {
     padding: 0;
     overflow: hidden;
 }
+
 /* 헤더 스타일 */
 .header {
     display: flex;
@@ -76,6 +77,11 @@ body {
 
 /* 콘텐츠 영역 */
 .content-container {
+    width: 100%;
+    max-width: 375px; /* 아이폰 미니 13 해상도에 맞춤 */
+    margin: 0 auto;
+    background-color: #fff;
+    overflow: hidden;
     position: relative;
     height: calc(100vh - 180px);
     overflow-y: auto;
@@ -99,23 +105,32 @@ body {
     color: #ff5e5e;
     font-weight: bold;
 }
+.sort-options button.active {
+    color: red;
+}
 
 .card {
+    display: flex; /* 가로 정렬 */
     background-color: #fff;
     border-radius: 10px;
     margin-bottom: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    align-items: center; /* 세로 중앙 정렬 */
 }
 .card img {
-    width: 100%;
-    height: auto;
+    width: auto;
+    height: 100px;
+    object-fit: cover; /* 이미지 비율 유지 */
+    margin-right: 15px; /* 이미지와 텍스트 간격 */
+    object-fit: cover; /* 이미지 잘림 방지 */
 }
 .card-content {
-    padding: 15px;
+    padding: 10px 15px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    justify-content: center; /* 텍스트를 수직 중앙에 정렬 */
+    gap: 5px; /* 텍스트 간격 */
 }
 .card-content h2 {
     font-size: 20px;

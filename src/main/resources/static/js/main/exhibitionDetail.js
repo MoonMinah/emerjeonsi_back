@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 /*imageUrl = exhibition.imageUrl; // 이미지 URL 설정*/
                 let banner = document.querySelector('.banner');
                 banner.innerHTML = `
-                    <div class="header">전시회 정보</div>
                     <img src="${exhibition.imageUrl}" alt="${exhibition.title}">
                  <!--   <div class="banner">
                         <p>\${exhibition.eventSite}<br>\${exhibition.startPeriod || ''} - \${exhibition.endPeriod || ''}</p>
@@ -88,7 +87,6 @@ function submitReservation() {
             console.error("예약 처리 중 오류 발생:", error);
         });
 }
-
 
 
 function increase1() {
