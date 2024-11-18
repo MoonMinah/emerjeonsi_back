@@ -41,13 +41,14 @@ public class MainRestController {
         log.info("RestApi : " + result);
         return result;
     }
-/*    @GetMapping("/home/search?filter=${selectedFilter}&keyword=${searchInput}")
-    public ResponseEntity<?> searchExhibitions(
-            @PathVariable String selectedFilter,
-            @PathVariable String searchInput){
-        return (ResponseEntity<?>) mainService.searchByFilter(selectedFilter, searchInput);
-    }*/
 
+    @GetMapping("/home/data/search")
+    public List<Exhibition> searchExhibitions(
+            @RequestParam("selectedFilter") String selectedFilter,
+            @RequestParam("searchInput") String searchInput) {
+        log.info("Filter Search API called with filter: {}, input: {}", selectedFilter, searchInput);
+        return mainService.searchByFilter(selectedFilter, searchInput);
+    }
 
     // 전시 상세 정보 반환
     @GetMapping("/home/{exhibitionNo}/data")
