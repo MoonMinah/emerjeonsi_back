@@ -57,6 +57,8 @@ public class MainRestController {
         log.info("Exhibition detail: " + exhibition);
         return exhibition;
     }
+
+    // 전시회 최신순, 이름순 정렬
     @GetMapping("/home/data/sort")
     public List<Exhibition> getExhibitionsSorted(@RequestParam("criteria") String criteria) {
         if ("name".equalsIgnoreCase(criteria)) {
