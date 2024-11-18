@@ -1,6 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page isELIgnored="false" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -16,7 +14,7 @@
 <header class="header">
     <img src="img/logo.png" alt="로고" />
     <div class="search-bar">
-        <input type="text" placeholder="검색" />
+        <input type="text" placeholder="검색" onclick="checkFilter()"/>
         <span class="filter-icon" onclick="settingModal()">⚙️</span>
     </div>
     <a href="/api/myPage">👤</a>
@@ -33,12 +31,9 @@
 
 <!-- 콘텐츠 영역 -->
 <div id="exhibitionList" class="content-container">
-
     <!-- 전시 카드 -->
     <div class="card">
-
     </div>
-    <!-- 추가 전시 카드들 -->
 </div>
 
 <!-- 모달 -->
@@ -48,15 +43,17 @@
         <h2>상세 검색</h2>
         <br>
         <label>
-            <input type="radio" name="option" value="title" onclick="applyFilter('title')">
+            <input type="radio" name="option" value="title">
             전시제목
         </label>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <label>
-            <input type="radio" name="option" value="museum" onclick="applyFilter('museum')">
+            <input type="radio" name="option" value="museum">
             박물관명
         </label>
-        <!-- 필터 옵션 추가 -->
+        <br><br>
+        <input type="text" placeholder="검색어" />
+        <button onclick="applyFilter()">확인</button>
     </div>
 </div>
 
@@ -74,34 +71,12 @@
         loadData('latest');
     });
 
-    // 이름순 or 최신순
-    document.querySelector(".search-bar input").addEventListener("input", (e) => {
-        searchInput = e.target.value;
-    });
-
-    /*
-        // 모달에서 필터 선택 시 동작
-        function applyFilter(option) {
-            selectedFilter = option; // 선택된 필터 업데이트
-            closeModal(); // 모달 닫기
-            if (searchInput.trim() !== '') {
-                searchByKeyword(); // 검색 수행
-            }
+    // 검색 조건이 설정되지 않았을 때 경고 메시지 표시
+    function checkFilter() {
+        if (!selectedFilter) {
+            alert("설정 아이콘을 클릭해 검색 조건을 설정해주세요.");
         }
-
-        // 검색 수행 함수
-        function searchByKeyword() {
-            const apiUrl = `/api/home/search?filter=\${selectedFilter}&keyword=\${searchInput}`;
-            axios.get(apiUrl)
-                .then(response => {
-                    const data = response.data;
-                    renderExhibitions(data); // 검색 결과 렌더링
-                })
-                .catch(error => {
-                    console.error("검색 중 오류 발생:", error);
-                    alert("검색 결과를 가져오는 중 오류가 발생했습니다.");
-                });
-        }*/
+    }
 
     // 정렬 기준에 따라 데이터 로드 및 정렬
     function sortBy(criteria) {
@@ -175,6 +150,31 @@
     // 모달 닫기 함수
     function closeModal() {
         document.getElementById('filterModal').style.display = 'none';
+    }
+
+    // 필터 적용 함수
+    function applyFilter() {
+        // 라디오 버튼에서 선택된 값 가져오기
+        const selectedFilter = document.querySelector('input[name="option"]:checked')?.value;
+        const searchInput = document.querySelector('.modal input[type="text"]').value.trim();
+
+        if (!selectedFilter || !searchInput) {
+            alert("필터 조건과 검색어를 입력해주세요.");
+            return;
+        }
+
+        // 필터 검색 API 호출
+        axios.get('/api/home/data/search', {
+            params: { selectedFilter, searchInput }
+        })
+            .then(response => {
+                data = response.data;
+                renderExhibitions(data); // 필터 결과 렌더링
+                closeModal(); // 모달 닫기
+            })
+            .catch(error => {
+                console.error("Error searching exhibitions:", error);
+            });
     }
 </script>
 

@@ -20,8 +20,9 @@
         </select>
 
         <!-- 필터링 검색 -->
-        <select id="searchByFilter"  resultType="com.kosa.emerjeonsiBack.dto.Exhibition">
-                SELECT * FROM TB_Exhibitions_Master
+        <select id="searchByFilter" parameterType="map" resultType="com.kosa.emerjeonsiBack.dto.Exhibition">
+                SELECT *
+                FROM TB_Exhibitions_Master
                 <where>
                         <if test="selectedFilter == 'title'">
                                 AND title LIKE CONCAT('%', #{searchInput}, '%')

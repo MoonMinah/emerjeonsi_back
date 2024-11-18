@@ -14,5 +14,6 @@ public interface MainMapper {
 
     List<Exhibition> getExhibitionsByName();
 
-    Object searchByFilter(String selectedFilter, String searchInput);
+    List<Exhibition> searchByFilter(@Param("selectedFilter") String selectedFilter, @Param("searchInput") String searchInput);
+
 }
