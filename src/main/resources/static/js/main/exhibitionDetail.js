@@ -15,23 +15,28 @@ document.addEventListener("DOMContentLoaded", function() {
                 /*imageUrl = exhibition.imageUrl; // 이미지 URL 설정*/
                 let banner = document.querySelector('.banner');
                 banner.innerHTML = `
-                    <img src="${exhibition.imageUrl}" alt="${exhibition.title}">
-                 <!--   <div class="banner">
-                        <p>\${exhibition.eventSite}<br>\${exhibition.startPeriod || ''} - \${exhibition.endPeriod || ''}</p>
-                    </div> -->
-                    <div class="details">
-                        <h2>${exhibition.title || '제목없음'}</h2>
-                        <div class="info">${exhibition.cntcInsttNm}<br>${exhibition.startPeriod || ''} - ${exhibition.endPeriod || ''}</div>
-                        <div class="description">
-                            ${exhibition.description || '전시 설명 없음'}
+                <img src="${exhibition.imageUrl}" alt="${exhibition.title}">
+             <!--   <div class="banner">
+                    <p>\${exhibition.eventSite}<br>\${exhibition.startPeriod || ''} - \${exhibition.endPeriod || ''}</p>
+                </div> -->
+                <div class="details">
+                    <h2>${exhibition.title || '제목없음'}</h2>
+                    <div class="description">
+                        ${exhibition.description || '전시 설명 없음'}
+                    </div>
+                    <div class="info">${exhibition.cntcInsttNm}<br><br>
+                                    ${exhibition.startPeriod || ''} - ${exhibition.endPeriod || ''}</div>
+                    <div class="row">
+                        <div class="price">
+                            성인 : 5,000 원<br>
+                            유아 : 1,000 원<br>
+                            노인 : 3,000 원
                         </div>
-                        <div class="price">성인 : ${exhibition.adultPrice} (원)
-                                        <br>유아 : ${exhibition.infantPrice} (원)
-                                        <br>노인 : ${exhibition.seniorPrice} (원)</div>
-
-                            <button type="button" onclick="openModal()">예매하기</button>
-
-                    </div>`;
+                        <div>
+                            <button class="reserve-btn" type="button" onclick="openModal()">예매하기</button>
+                        </div>
+                      </div>
+                </div>`;
             })
             .catch(error => {
                 console.error("Error fetching exhibition data:", error);

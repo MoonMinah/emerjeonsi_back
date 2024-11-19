@@ -1,38 +1,17 @@
 let data = []; // 서버에서 받은 데이터를 저장할 변수
+let selectedFilter = ''; // 기본 필터
+let searchInput = ''; // 검색어 초기화
 
 document.addEventListener("DOMContentLoaded", function () {
     // 초기 데이터 로드
     loadData('latest');
 });
 
-// 검색어 입력 시 값 업데이트
-document.querySelector(".search-bar input").addEventListener("input", (e) => {
-    searchInput = e.target.value;
-});
-
-// 모달에서 필터 선택 시 동작
-function applyFilter(option) {
-    selectedFilter = option; // 선택된 필터 업데이트
-    closeModal(); // 모달 닫기
-    if (searchInput.trim() !== '') {
-        searchByKeyword(); // 검색 수행
-    } else {
-        alert("검색어를 입력해주세요!");
+// 검색 조건이 설정되지 않았을 때 경고 메시지 표시
+function checkFilter() {
+    if (!selectedFilter) {
+        alert("설정 아이콘을 클릭해 검색 조건을 설정해주세요.");
     }
-}
-
-// 검색 수행 함수
-function searchByKeyword() {
-    const apiUrl = `/api/home/search?filter=${selectedFilter}&keyword=${encodeURIComponent(searchInput)}`;
-    axios.get(apiUrl)
-        .then(response => {
-            const data = response.data;
-            renderExhibitions(data); // 검색 결과 렌더링
-        })
-        .catch(error => {
-            console.error("검색 중 오류 발생:", error);
-            alert("검색 결과를 가져오는 중 오류가 발생했습니다.");
-        });
 }
 
 // 정렬 기준에 따라 데이터 로드 및 정렬
@@ -68,28 +47,35 @@ function renderExhibitions(data) {
     const exhibitionList = document.getElementById("exhibitionList");
     exhibitionList.innerHTML = ''; // 기존 목록 제거
 
+    if (data.length === 0) {
+        exhibitionList.innerHTML = '<p class="no-result">검색 결과가 없습니다.</p>';
+        return;
+    }
+
     data.forEach(exhibition => {
         const title = exhibition.title || '제목없음';
-        const imageUrl = exhibition.imageUrl || '/img/default-image.png'; // 기본 이미지 설정
+        const imageUrl = exhibition.imageUrl || '/img/default-image.png';
 
         let card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
-            <a href="/home/${exhibition.exhibitionNo}">
-                <img src="${imageUrl}" alt="${title}">
-                <div class="card-content">
-                    <h2>${title}</h2>
-                    <div class="info-row">
-                        <div class="info">${exhibition.cntcInsttNm || ''}<br>${exhibition.startPeriod || ''} - ${exhibition.endPeriod || ''}</div>
-                        <div class="price">
-                            성인 : ${exhibition.adultPrice || ""}원<br>
-                            유아 : ${exhibition.infantPrice || ""}원<br>
-                            노인 : ${exhibition.seniorPrice || ""}원
+                <div><img src="${imageUrl}" alt="${title}"></div>
+                <a href="/home/${exhibition.exhibitionNo}">
+                    <div class="card-content">
+                        <h2>${title}</h2>
+                        <div class="info-row1">
+                            <div class="info">${exhibition.cntcInsttNm || ''}<br>
+                                              ${exhibition.startPeriod || ''} - ${exhibition.endPeriod || ''}
+                            </div>
+                        </div>
+                        <div class="info-row2">
+                            <div class="price">
+                                1,000 - 5,000 원
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a>
-        `;
+                </a>
+            `;
         exhibitionList.appendChild(card);
     });
 }
@@ -102,4 +88,29 @@ function settingModal() {
 // 모달 닫기 함수
 function closeModal() {
     document.getElementById('filterModal').style.display = 'none';
+}
+
+// 필터 적용 함수
+function applyFilter() {
+    // 라디오 버튼에서 선택된 값 가져오기
+    const selectedFilter = document.querySelector('input[name="option"]:checked')?.value;
+    const searchInput = document.querySelector('.modal input[type="text"]').value.trim();
+
+    if (!selectedFilter || !searchInput) {
+        alert("필터 조건과 검색어를 입력해주세요.");
+        return;
+    }
+
+    // 필터 검색 API 호출
+    axios.get('/api/home/data/search', {
+        params: { selectedFilter, searchInput }
+    })
+        .then(response => {
+            data = response.data;
+            renderExhibitions(data); // 필터 결과 렌더링
+            closeModal(); // 모달 닫기
+        })
+        .catch(error => {
+            console.error("Error searching exhibitions:", error);
+        });
 }

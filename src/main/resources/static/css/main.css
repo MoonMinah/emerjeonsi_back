@@ -123,6 +123,8 @@ body {
     height: 100px;
     object-fit: cover; /* 이미지 비율 유지 */
     margin-right: 15px; /* 이미지와 텍스트 간격 */
+    margin-top: 0px;
+    margin-bottom: 0px;
     object-fit: cover; /* 이미지 잘림 방지 */
 }
 .card-content {
@@ -138,7 +140,8 @@ body {
     color: #333;
     font-weight: bold;
 }
-.card-content .info-row {
+.card-content .info-row1
+.card-content .info-row2{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -148,9 +151,11 @@ body {
     color: #777;
 }
 .card-content .price {
+    display: flex;
     font-size: 13px;
     font-weight: bold;
-    color: #333;
+    color: #777;
+    margin-right: 0px;
 }
 .card-content .price::before {
     font-weight: normal;
