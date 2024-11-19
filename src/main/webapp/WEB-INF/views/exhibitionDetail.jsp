@@ -20,11 +20,9 @@
 <div class="bannerText">전시상세</div>
 
     <div class="container">
-    </div>
         <div class="banner">
         </div>
-        <div class="details">
-        </div>
+    </div>
 
 <!-- Modal Structure -->
 <div class="modal" id="reservationModal">
@@ -32,8 +30,6 @@
     <div class="modal-header">옵션 선택</div>
     <div class="modal-content">
         <!-- 선택사항 UI 내용 -->
-        <p>[유효기간: 2024.10.30~2024.11.12]</p>
-        <br>
         <div>
             <div class="option-row">
                 <p>성인 : 5,000 (원)</p>
