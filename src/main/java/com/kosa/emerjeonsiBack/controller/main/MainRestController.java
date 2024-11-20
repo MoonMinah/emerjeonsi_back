@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -103,5 +106,25 @@ public class MainRestController {
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러로 인해 오류가 발생하였습니다.");
         }
+    }
+    @GetMapping("/check-login")
+    public ResponseEntity<User> checkLoginStatus() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        log.info("Security Context 인증 정보: {}", authentication);
+        log.info("getLoggedInUserInfo Authentication: {}", authentication);
+
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) principal;
+            User user = userService.selectUserByUserId(userDetails.getUsername());
+            log.info("로그인된 사용자 정보: {}", user);
+            return ResponseEntity.ok(user);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }

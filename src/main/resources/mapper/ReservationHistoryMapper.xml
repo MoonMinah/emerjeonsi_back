@@ -8,4 +8,9 @@
         (reservationNo, reservationStatus, reservationEventTimeStamp)
         VALUES (#{reservationNo}, #{reservationStatus}, CURRENT_TIMESTAMP)
     </insert>
+    <update id="updateReservationHistoryStatus" parameterType="com.kosa.emerjeonsiBack.dto.ReservationHistory">
+        UPDATE TB_Reservations_History
+        SET reservationStatus = #{reservationStatus}
+        WHERE reservationNo = #{reservationNo}
+    </update>
 </mapper>

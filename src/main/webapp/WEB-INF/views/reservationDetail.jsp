@@ -3,34 +3,62 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>예매 상세</title>
+    <link rel="stylesheet" href="/css/reservationDatail.css">
+    <script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
-<script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <body>
-<div class="container">
-    <h1>예매 상세 정보</h1>
-    <p>전시 번호: ${exhibitionNo}</p>
-    <p>가격: ${reservationPrice}원</p>
-    <p>수량: ${reservationQuantity}매</p>
-    <p>총 금액: ${totalPrice}원</p>
+
+<header class="header">
+    <img src="/img/logo.png" alt="로고" class="logo">
+    <div class="search-bar">
+        <input type="text" placeholder="검색">
+        <span class="filter-icon" onclick="openModal()">⚙️</span>
+    </div>
+    <span class="user-icon">👤</span>
+</header>
+
+<div class="banner">예매 상세</div>
+
+<div class="content-container">
+    <div class="card">
+        <img id="exhibitionImage" src="/img/kumho.png" alt="전시 이미지">
+        <div class="card-content">
+            <h2 id = "exhibitionTitle">금호강과 길</h2>
+            <div class="info-row">
+                <div class="info">국립대구박물관<br>2018.6.19 - 2018.9.30</div>
+                <div class="price">1,000 - 5,000 (원)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 주문 내역 섹션 -->
+    <div class="order-summary">
+        <h3>상세 주문 내역</h3>
+        <p><strong>전시 번호:</strong> <span id="exhibitionNo"></span></p>
+        <p><strong>예매 금액:</strong> <span id="reservationPrice"></span></p>
+        <p><strong>총 티켓 수량:</strong> <span id="reservationQuantity"></span></p>
+        <p><strong>총 금액:</strong> <span id="totalPrice"></span></p>
+        <p><strong>선택된 옵션:</strong> <span id="selectedDetails"></span></p>
+    </div>
+
+    <h3>결제 수단</h3>
+    <div class="custom-select-box">
+        <img id="currentPaymentIcon" class="payment-icon" src="/img/payment_icon_yellow_medium.png" alt="">
+        <select id="paymentMethodSelect" class="form-control">
+            <option value="kakaopay" data-icon="/img/payment_icon_yellow_medium.png">카카오페이</option>
+            <option value="inicis" data-icon="/img/ci_KG_JPG.jpg">KG이니시스</option>
+        </select>
+    </div>
+    <br>
+    <button id="payment" class="btn btn-primary">결제하기</button>
+
+    <p class="notice">전시 시작일로부터는 취소 및 환불이 되지 않습니다.</p>
 </div>
-<h3>결제 수단</h3>
-<div class="custom-select-box">
-    <img id="currentPaymentIcon" class="payment-icon" src="/images/payment_icon_yellow_medium.png" alt="KakaoPay">
-    <select id="paymentMethodSelect" class="form-control">
-        <option value="kakaopay" data-icon="/images/payment_icon_yellow_medium.png">카카오페이</option>
-        <option value="inicis" data-icon="/images/ci_KG_JPG.jpg">KG이니시스</option>
-    </select>
-</div>
-<br>
-<button id="payment" class="btn btn-primary">결제하기</button>
-<script>
-    const exhibitionNo = "${exhibitionNo}";
-    const reservationPrice = "${reservationPrice}";
-    const reservationQuantity = "${reservationQuantity}";
-    const totalPrice = "${totalPrice}";
-</script>
+
 <script src="/js/reservation/reservation_Detail.js"></script>
 </body>
 </html>

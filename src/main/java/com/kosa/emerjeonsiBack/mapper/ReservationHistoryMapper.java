@@ -5,7 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface ReservationHistoryMapper {
-     int insertReservationHistory(ReservationHistory reservationHistory);
+     public int insertReservationHistory(ReservationHistory reservationHistory);
+     public ReservationHistory updateReservationHistoryStatus(int reservationHistoryNo, String status);
 
 
 }
