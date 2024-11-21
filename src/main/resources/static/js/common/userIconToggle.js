@@ -1,9 +1,8 @@
-
-    document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
     checkLoginStatus();
 });
 
-    function checkLoginStatus() {
+function checkLoginStatus() {
     // 로그인 상태 확인
     axios.get('/api/check-login')
         .then(response => {
@@ -28,29 +27,31 @@
         });
 }
 
-    function toggleMenu() {
+function toggleMenu() {
     const menu = document.getElementById('userMenu');
     menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
 
-    function goToReservations() {
+function goToReservations() {
     alert('예매 목록 페이지로 이동합니다.');
     window.location.href = '/user/myPage/myReservations';
 }
 
-    function goToRefunds() {
+function goToRefunds() {
     alert('환불 내역 페이지로 이동합니다.');
 }
 
-    function goToUpdateInfo() {
+function goToUpdateInfo() {
     alert('정보 수정 페이지로 이동합니다.');
+
+    window.location.href = "/user/mypage/myInfo"
 }
 
-    function logout() {
+function logout() {
     alert('로그아웃되었습니다.');
     window.location.href = '/logout';
 }
 
-    function goToLogin() {
+function goToLogin() {
     window.location.href = '/login';
 }

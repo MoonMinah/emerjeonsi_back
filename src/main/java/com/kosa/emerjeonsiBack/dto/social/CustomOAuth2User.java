@@ -37,10 +37,11 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public String getName() {
-        return oAuth2Response.getName();
+        // Securitry에서 사용자 식별자로 사용되는 값 반환
+        return oAuth2Response.getProvider() + "_" + oAuth2Response.getProviderId();
     }
 
     public String getUsername() {
-        return oAuth2Response.getProvider() + "_" + oAuth2Response.getProviderId();
+        return oAuth2Response.getName();
     }
 }

@@ -2,6 +2,7 @@ package com.kosa.emerjeonsiBack.controller.main;
 
 import com.kosa.emerjeonsiBack.dto.Exhibition;
 import com.kosa.emerjeonsiBack.dto.User;
+import com.kosa.emerjeonsiBack.dto.social.CustomOAuth2User;
 import com.kosa.emerjeonsiBack.service.MainService;
 import com.kosa.emerjeonsiBack.service.UserService;
 import jakarta.validation.Valid;
@@ -119,12 +120,29 @@ public class MainRestController {
         }
 
         Object principal = authentication.getPrincipal();
-        if (principal instanceof UserDetails) {
+
+        if(principal instanceof CustomOAuth2User) {
+            // OAuth2 사용자 처리
+            CustomOAuth2User oAuth2User = (CustomOAuth2User) principal;
+            User user = userService.selectUserByUserId(oAuth2User.getName());
+
+            if(user == null) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            return ResponseEntity.ok(user);
+        } else if(principal instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) principal;
             User user = userService.selectUserByUserId(userDetails.getUsername());
             log.info("로그인된 사용자 정보: {}", user);
+
+            if(user == null) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             return ResponseEntity.ok(user);
         }
+        
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }
