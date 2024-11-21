@@ -42,10 +42,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return null;
         }
 
-        String userId = oAuth2Response.getProvider() + "_" + oAuth2Response.getProviderId();
-        User existData = userMapper.selectUserByUserId(userId);
-
         String role = "ROLE_USER";
+
+        CustomOAuth2User customOAuth2User = new CustomOAuth2User(oAuth2Response, role);
+
+        String userId = customOAuth2User.getName();
+        User existData = userMapper.selectUserByUserId(userId);
 
         if(existData == null) {
             User user = new User();
@@ -64,6 +66,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             role = existData.getRole();
         }
 
-        return new CustomOAuth2User(oAuth2Response, role);
+        return customOAuth2User;
     }
 }
