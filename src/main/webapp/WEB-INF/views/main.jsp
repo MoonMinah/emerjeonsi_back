@@ -17,7 +17,13 @@
         <input type="text" placeholder="검색" onclick="checkFilter()"/>
         <span class="filter-icon" onclick="settingModal()">⚙️</span>
     </div>
-    <a href="/user/myPage/myReservations">👤</a>
+<%--    <a href="/user/myPage/myReservations">👤</a>--%>
+    <div class="user-menu-container">
+        <span class="user-icon" onclick="toggleMenu()">👤</span>
+        <ul class="user-menu" id="userMenu">
+
+        </ul>
+    </div>
 </header>
 
 <!-- 전시목록 배너 -->
@@ -58,8 +64,11 @@
 </div>
 
 <!-- axios 라이브러리 추가 -->
+
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/js/common/userIconToggle.js"></script>
 <script src="/js/main/main.js"></script>
+
 
 </body>
 </html>

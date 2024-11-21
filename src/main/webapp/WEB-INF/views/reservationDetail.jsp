@@ -18,7 +18,12 @@
         <input type="text" placeholder="검색">
         <span class="filter-icon" onclick="openModal()">⚙️</span>
     </div>
-    <span class="user-icon">👤</span>
+    <div class="user-menu-container">
+        <span class="user-icon" onclick="toggleMenu()">👤</span>
+        <ul class="user-menu" id="userMenu">
+
+        </ul>
+    </div>
 </header>
 
 <div class="banner">예매 상세</div>
@@ -58,7 +63,7 @@
 
     <p class="notice">전시 시작일로부터는 취소 및 환불이 되지 않습니다.</p>
 </div>
-
-<script src="/js/reservation/reservation_Detail.js"></script>
+<script src="/js/common/userIconToggle.js"></script>
+<script src="/js/reservation/reservationDetail.js"></script>
 </body>
 </html>

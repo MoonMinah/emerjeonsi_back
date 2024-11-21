@@ -20,10 +20,7 @@
     <div class="user-menu-container">
         <span class="user-icon" onclick="toggleMenu()">👤</span>
         <ul class="user-menu" id="userMenu">
-            <li onclick="goToUpdateInfo()">정보 수정</li>
-            <li onclick="goToReservations()">예매 내역</li>
-            <li onclick="goToRefunds()">환불 내역</li>
-            <li onclick="logout()">로그아웃</li>
+
         </ul>
     </div>
 </header>
@@ -41,35 +38,7 @@
 
 <!-- 페이징 버튼 -->
 <div id="pagination"></div>
-<script>
-    function goToMain() {
-        window.location.href = '/home'; // 메인 페이지의 URL로 수정하세요.
-    }
-    // 유저 메뉴 보이기/숨기기 토글
-    function toggleMenu() {
-        const menu = document.getElementById('userMenu');
-        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    }
-
-    // 예시 함수들
-    function goToReservations() {
-        alert('예매 목록 페이지로 이동합니다.');
-        window.location.href = '/user/myPage/myReservations';
-    }
-
-    function goToRefunds() {
-        alert('환불 내역페이지로 이동합니다.');
-    }
-
-    function goToUpdateInfo() {
-        alert('정보 수정페이지로 이동합니다.');
-    }
-
-    function logout() {
-        alert('로그아웃되었습니다.');
-        window.location.href = '/logout';
-    }
-</script>
+<script src="/js/common/userIconToggle.js"></script>
 <script type="module" src="/js/myPage/myReservations.js"></script>
 </body>
 
