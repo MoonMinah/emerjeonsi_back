@@ -20,11 +20,12 @@
         <p class="separator">or</p>
 
         <button class="social-button google-login" onclick="window.location.href='/oauth2/authorization/google'">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo" class="icon">
+            <img src="/img/social/google_login.png" alt="Google logo" class="icon">
             구글 아이디로 로그인
         </button>
+<%--        <img src="/img/social/kakao_login_medium_wide.png" alt="Kakao logo" onclick="window.location.href='/oauth2/authorization/kakao'">--%>
         <button class="social-button kakao-login" onclick="window.location.href='/oauth2/authorization/kakao'">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Kakao_icon_%28square%29.svg/1024px-Kakao_icon_%28square%29.svg.png" alt="Kakao logo" class="icon">
+            <img src="/img/social/kakao_login.png" alt="Kakao logo" class="icon">
             카카오 아이디로 로그인
         </button>
     </div>
