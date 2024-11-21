@@ -115,6 +115,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     amount: reservationPrice,  // totalPrice 변수를 사용
                     buyer_email: user.email,
                     buyer_name: user.userName,
+                    popup: true
                     //...(isMobile() ? { m_redirect_url: "http://192.168.240.7:9400/myReservations" } : {})
                 }, function (rsp) {
                     if (rsp.success) {

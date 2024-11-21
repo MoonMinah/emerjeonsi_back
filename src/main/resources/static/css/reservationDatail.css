@@ -181,16 +181,26 @@ body {
     margin-top: 8px;
 }
 
-/* .imp-dialog의 스타일을 모바일 및 데스크탑 환경에서 전체 화면에 맞게 조정 */
-/*.imp-dialog {*/
-/*    width: 100vw !important;       !* 화면의 너비에 맞추기 *!*/
-/*    height: 100vh !important;      !* 화면의 높이에 맞추기 *!*/
-/*    top: 0 !important;             !* 화면 상단에 고정 *!*/
-/*    left: 0 !important;            !* 화면 왼쪽에 고정 *!*/
-/*    border-radius: 0 !important;   !* 둥근 모서리 제거하여 전체 화면 사용 *!*/
-/*    overflow-y: auto !important;   !* 스크롤 필요 시 활성화 *!*/
-/*}*/
 
+.imp-dialog {
+    /*width: 700vw !important;       !* 화면의 너비에 맞추기 *!*/
+    /*height: 70vh !important;      !* 화면의 높이에 맞추기 *!*/
+    /*top: 0 !important;             !* 화면 상단에 고정 *!*/
+    /*left: 0 !important;            !* 화면 왼쪽에 고정 *!*/
+    /*border-radius: 0 !important;   !* 둥근 모서리 제거하여 전체 화면 사용 *!*/
+    /*overflow-y: auto !important;   !* 스크롤 필요 시 활성화 *!*/
+    padding: 0 30px;
+
+}
+
+.imp-frame {
+    padding: 0 30px;
+}
+
+._header_5em3s_1 {
+
+    padding: 0 30px;
+}
 /* 모바일 환경에서 .imp-dialog가 화면을 꽉 채우도록 추가 설정 */
 /*@media (max-width: 768px) {*/
 /*    .imp-dialog {*/
