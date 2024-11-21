@@ -17,7 +17,7 @@
         <input type="text" placeholder="검색" onclick="checkFilter()"/>
         <span class="filter-icon" onclick="settingModal()">⚙️</span>
     </div>
-    <a href="/api/myPage">👤</a>
+    <a href="/user/myPage/myReservations">👤</a>
 </header>
 
 <!-- 전시목록 배너 -->

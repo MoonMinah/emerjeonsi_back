@@ -13,7 +13,7 @@
 
 <header class="header">
     <a href="/home"><img src="../img/logo.png" alt="로고" /></a>
-    <a href="/api/myPage">👤</a>
+    <a href="/user/myPage/myReservations">👤</a>
 </header>
 
 <!-- 전시상세 배너 -->
@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="option-row">
-                <p>노인 : 5,000 (원)</p>
+                <p>노인 : 3,000 (원)</p>
                 <div class="quantity-selector">
                     <button onclick="decrease3()">-</button>
                     <span id="quantity3">0</span>

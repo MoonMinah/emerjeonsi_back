@@ -15,9 +15,12 @@ public class PaymentRestController {
     @Autowired
     private PaymentService paymentService;
 
-    @PostMapping("/api/reservation-payment")
+    @PostMapping("/api/user/reservation-payment")
     public ResponseEntity<String> reservationAndPayment(@RequestBody ReservationPayment reservationPayment) {
       try {
+          log.info("Reservation(예매): " + reservationPayment.getReservation());
+          log.info("Payment(결제): " + reservationPayment.getPayment());
+          log.info("payment(결제번호" + reservationPayment.getPayment().getPaymentNo());
           paymentService.reserveAndPay(reservationPayment.getReservation(), reservationPayment.getPayment());
           return ResponseEntity.ok("결제가 성공적으로 완료되었습니다!");
       }catch (Exception e) {

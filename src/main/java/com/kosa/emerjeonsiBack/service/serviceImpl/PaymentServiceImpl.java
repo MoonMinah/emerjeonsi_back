@@ -9,11 +9,15 @@ import com.kosa.emerjeonsiBack.mapper.PaymentMapper;
 import com.kosa.emerjeonsiBack.mapper.ReservationHistoryMapper;
 import com.kosa.emerjeonsiBack.mapper.ReservationMapper;
 import com.kosa.emerjeonsiBack.service.PaymentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
+@Slf4j
 public class PaymentServiceImpl implements PaymentService {
 
     @Autowired
@@ -31,43 +35,46 @@ public class PaymentServiceImpl implements PaymentService {
      * @return
      */
     @Override
-    public int insertPayment(Payment payment) {
-        return paymentMapper.insertPayment(payment);
+    public void insertPayment(Payment payment) {
+
+         paymentMapper.insertPayment(payment);
     }
 
     @Transactional
     @Override
     public void reserveAndPay(Reservation reservation, Payment payment) {
-        // 예매 정보 저장 및 상태 이력 기록
-        reservationMapper.insertReservation(reservation);  // reservationNo가 생성됨
-        System.out.println("결제 서비스(예매번호) : " + reservation.getReservationNo());
 
-        // reservationNo가 정상적으로 생성되었는지 확인
-        if (reservation.getReservationNo() == 0) {
-            throw new RuntimeException("Reservation insertion failed, reservationNo not generated.");
-        }
+        // 예약 테이블 상태 업데이트
+        log.info("Updating reservation status for reservationNo: {}", reservation.getReservationNo());
+        String newReservationStatus = payment.getPaymentStatus().equals("결제성공") ? "예매완료" : "취소";
+        reservationMapper.updateReservationStatus(reservation.getReservationNo(), newReservationStatus);
 
+        // 예약 이력 테이블에 새로운 상태 기록 삽입
+        log.info("Inserting reservation history for reservationNo: {}", reservation.getReservationNo());
         ReservationHistory reservationHistory = new ReservationHistory();
         reservationHistory.setReservationNo(reservation.getReservationNo());
-        reservationHistory.setReservationStatus("결제대기");
+        reservationHistory.setReservationStatus(newReservationStatus);
+        reservationHistory.setReservationEventTimeStamp(LocalDateTime.now());
         reservationHistoryMapper.insertReservationHistory(reservationHistory);
 
-        // 결제 정보 저장 및 상태 이력 기록
-        payment.setReservationNo(reservation.getReservationNo()); // 예약 번호를 결제 정보에 설정
+        // 결제 테이블에 결제 정보 삽입
+        log.info("Inserting payment record for reservationNo: {}", reservation.getReservationNo());
+        payment.setReservationNo(reservation.getReservationNo());
         paymentMapper.insertPayment(payment);
-        System.out.println("결제 서비스(결제번호) : " + payment.getPaymentNo());
+        log.info("Generated paymentNo after insertion: {}", payment.getPaymentNo()); // 확인용 로그
+        // 로그 확인
+        log.info("paymentNo-ServiceImpl", payment.getPaymentNo());
+        System.out.println("Generated paymentNo: " + payment.getPaymentNo());
 
+        // 결제 이력 테이블에 결제 상태 기록 삽입
+        log.info("Inserting payment history for paymentNo: {}", payment.getPaymentNo());
         PaymentHistory paymentHistory = new PaymentHistory();
         paymentHistory.setPaymentNo(payment.getPaymentNo());
         paymentHistory.setPaymentStatus(payment.getPaymentStatus());
+        paymentHistory.setPaymentEventTimestamp(LocalDateTime.now());
         paymentHistoryMapper.insertPaymentHistory(paymentHistory);
-
-        // 결제가 성공적으로 완료된 경우 예매 상태 업데이트
-        reservation.setReservationStatus("예매완료");
-        reservationMapper.updateReservationStatus(reservation);
-        reservationHistory.setReservationStatus("예매완료");
-        reservationHistoryMapper.insertReservationHistory(reservationHistory);
     }
+
 
 
 }

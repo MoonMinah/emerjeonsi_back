@@ -1,10 +1,15 @@
 package com.kosa.emerjeonsiBack.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @ToString
@@ -15,13 +20,20 @@ public class Payment {
     private String paymentMethod; //결제 수단
     private String paymentStatus; //결제 상태
     private BigDecimal paymentPrice; //결제 금액
+
+
+    @JsonIgnore // JSON에 포함되지 않도록 설정
     private LocalDateTime paymentDate; //결제 일시
 
-    // 날짜 형식 지정
+    // JSON 응답에 포함될 필드
+    @JsonProperty("formattedPaymentDate")
     public String getFormattedPaymentDate() {
         if (this.paymentDate == null) {
             return null;
         }
-        return this.paymentDate.toString(); // LocalDate는 기본적으로 "yyyy-MM-dd" 형식입니다.
+        return this.paymentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
+
+
+
 }

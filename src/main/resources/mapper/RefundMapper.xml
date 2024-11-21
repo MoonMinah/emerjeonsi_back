@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosa.emerjeonsiBack.mapper.RefundMapper">
+    <!-- 환불  -->
+    <!-- 예매 상태 업데이트 -->
+    <update id="updateReservationStatus">
+        UPDATE TB_Reservations_Master
+        SET reservationStatus = #{reservationStatus}
+        WHERE reservationNo = #{reservationNo}
+    </update>
+
+    <!-- 예매 이력 추가 -->
+    <insert id="insertReservationHistory">
+        INSERT INTO TB_Reservations_History (reservationNo, reservationStatus, reservationEventTimestamp)
+        VALUES (#{reservationNo}, #{reservationStatus}, CURRENT_TIMESTAMP)
+    </insert>
+    <!-- 결제 상태 업데이트 -->
+    <update id="updatePaymentStatus">
+        UPDATE TB_Payments_Master
+        SET paymentStatus = #{paymentStatus}
+        WHERE paymentNo = #{paymentNo}
+    </update>
+    <!-- 결제 이력 추가 -->
+    <insert id="insertPaymentHistory">
+        INSERT INTO TB_Payments_History (paymentNo, paymentStatus, paymentEventTimestamp, refundAmount)
+        VALUES (#{paymentNo}, #{paymentStatus}, CURRENT_TIMESTAMP, #{refundAmount})
+    </insert>
+</mapper>

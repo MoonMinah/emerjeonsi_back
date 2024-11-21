@@ -15,5 +15,7 @@ public class Reservation {
 
     private Exhibition exhibition; //전시 정보를 저장할 필드.
 
+    private ReservationHistory reservationHistory; //예매 이력 정보를 저장할 필드
+
     private Payment payment; //나의 예매 목록 - 결제 내역을 위한 필드.
 }

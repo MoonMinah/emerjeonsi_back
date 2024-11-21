@@ -16,6 +16,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User selectUserByUserId(String userId) {
+        return userMapper.selectUserByUserId(userId);
+    }
+
+    @Override
     public Boolean existsByUserId(String userId) {
         return userMapper.existsByUserId(userId);
     }

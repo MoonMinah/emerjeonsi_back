@@ -3,17 +3,35 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kosa.emerjeonsiBack.mapper.ReservationMapper">
+    <!-- 예매 등록 -->
     <insert id="insertReservation" parameterType="com.kosa.emerjeonsiBack.dto.Reservation" useGeneratedKeys="true" keyProperty="reservationNo">
         INSERT INTO TB_Reservations_Master
         (userNo, exhibitionNo, reservationPrice, reservationQuantity, reservationStatus)
         VALUES (#{userNo}, #{exhibitionNo}, #{reservationPrice}, #{reservationQuantity}, '결제대기')
     </insert>
 
-    <update id="updateReservationStatus" parameterType="com.kosa.emerjeonsiBack.dto.Reservation">
+    <!-- 예매 상태 업데이트 -->
+    <update id="updateReservationStatus" parameterType="map">
         UPDATE TB_Reservations_Master
         SET reservationStatus = #{reservationStatus}
         WHERE reservationNo = #{reservationNo}
     </update>
+
+    <!-- 가장 최근에 생성된 reservationNo 가져오기 -->
+    <select id="getLastInsertedReservationNo" resultType="int">
+        SELECT reservationNo
+        FROM TB_Reservations_Master
+        ORDER BY reservationNo DESC
+        LIMIT 1
+    </select>
+    <!-- 서비스 - 결제 상세 -->
+    <select id="getReservationDetail" parameterType="int" resultMap="reservationResultMap">
+        SELECT *
+        FROM tb_reservations_master rm
+        INNER JOIN tb_exhibitions_master em
+        ON rm.exhibitionNo = em.exhibitionNo
+        WHERE reservationNo = #{reservationNo};
+    </select>
 
     <!-- 복잡한 결과 매핑을 위한 resultMap 설정 -->
     <resultMap id="reservationResultMap" type="com.kosa.emerjeonsiBack.dto.Reservation">
@@ -38,7 +56,6 @@
             <result property="contactPoint" column="contactPoint"/>
             <result property="startPeriod" column="startPeriod"/>
             <result property="endPeriod" column="endPeriod"/>
-            <result property="updatedEx" column="updatedEx"/>
             <result property="adultPrice" column="adultPrice"/>
             <result property="infantPrice" column="infantPrice"/>
             <result property="seniorPrice" column="seniorPrice"/>
@@ -52,6 +69,12 @@
             <result property="paymentStatus" column="paymentStatus"/>
             <result property="paymentPrice" column="paymentPrice"/>
             <result property="paymentDate" column="paymentDate"/>
+            <result property="refundAmount" column="refundAmount"/>
+        </association>
+        <!-- ReservationHistory를 위한 매핑 -->
+        <association property="reservationHistory" javaType="com.kosa.emerjeonsiBack.dto.ReservationHistory">
+            <id property="reservationHistoryNo" column="reservationHistoryNo"/>
+            <result property="reservationEventTimeStamp" column="reservationEventTimeStamp"/>
         </association>
     </resultMap>
 
@@ -65,6 +88,19 @@
         FROM tb_exhibitions_master ex
         JOIN tb_reservations_master rm ON ex.exhibitionNo = rm.exhibitionNo
         JOIN tb_payments_master pm ON rm.reservationNo = pm.reservationNo
+        JOIN tb_users_master um ON um.userNo = rm.userNo
+        WHERE rm.userNo = #{userNo}
+        AND pm.paymentStatus = '결제성공'
+        AND rm.reservationStatus = '예매완료'
+        ORDER BY rm.reservationNo DESC
+        LIMIT #{offset}, #{size};
+    </select>
+
+    <!-- 사용자 번호에 따른 예약 목록 총 개수 조회 -->
+    <select id="countReservationsByUserNo" resultType="int">
+        SELECT COUNT(*)
+        FROM tb_reservations_master rm
+        JOIN tb_payments_master pm ON rm.reservationNo = pm.reservationNo
         WHERE rm.userNo = #{userNo}
         AND pm.paymentStatus = '결제성공'
         AND rm.reservationStatus = '예매완료';
@@ -72,17 +108,21 @@
 
     <!--나의 예약목록 - 상세 내역 -->
     <select id="getMyReservationDetail" resultMap="reservationResultMap" parameterType="int">
-        SELECT em.title, em.cntcInsttNm, em.eventSite, em.startPeriod, em.endPeriod, em.adultPrice, em.infantPrice, em.seniorPrice,
-        rm.reservationPrice, rm.reservationQuantity
-        FROM tb_exhibitions_master em inner join tb_reservations_master rm
+        SELECT em.title, em.cntcInsttNm, em.imageUrl, em.eventSite, em.startPeriod, em.endPeriod, em.adultPrice, em.infantPrice, em.seniorPrice,
+        rm.reservationPrice, rm.reservationQuantity, rh.reservationStatus, rh.reservationEventTimestamp
+        FROM tb_exhibitions_master em
+        INNER JOIN tb_reservations_master rm
         ON em.exhibitionNo = rm.exhibitionNo
-        WHERE rm.reservationNo = #{reservationNo};
+        INNER JOIN tb_reservations_history rh
+        ON rm.reservationNo = rh.reservationNo
+        WHERE rm.reservationNo = #{reservationNo}
+        AND rh.reservationStatus = '예매완료';
     </select>
 
     <!-- 나의 예매목록 - 결제 내역   -->
     <select id="getMyReservationPaymentDetail" resultMap="reservationResultMap" parameterType="int">
-        select em.title, em.cntcInsttNm, em.startPeriod, em.endPeriod, em.adultPrice, em.seniorPrice, em.infantPrice,
-        rm.reservationPrice, rm.reservationQuantity, pm.paymentPrice, pm.paymentMethod, pm.paymentDate
+        select em.title, em.cntcInsttNm, em.imageUrl, em.startPeriod, em.endPeriod, em.adultPrice, em.seniorPrice, em.infantPrice, rm.reservationNo,
+        rm.reservationPrice, rm.reservationQuantity, pm.paymentNo, pm.paymentPrice, pm.paymentMethod, pm.paymentDate, pm.paymentUid
         from tb_exhibitions_master em inner join tb_reservations_master rm
         on em.exhibitionNo = rm.exhibitionNo
         inner join tb_payments_master pm

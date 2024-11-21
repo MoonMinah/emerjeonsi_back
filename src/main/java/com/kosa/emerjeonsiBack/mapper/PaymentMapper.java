@@ -8,6 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface PaymentMapper {
 
-    public  int insertPayment(Payment payment); //결제 등록.
+    public void insertPayment(Payment payment); //결제 등록.
     public void insertReservationAndPayment(Reservation reservation, Payment payment);
 }
