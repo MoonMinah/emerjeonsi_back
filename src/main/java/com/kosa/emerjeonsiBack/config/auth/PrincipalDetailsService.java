@@ -32,6 +32,10 @@ public class PrincipalDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("탈퇴된 계정입니다.");
         }
 
+        if("강퇴".equals(resultUser.getUserStatus())) {
+            throw new UsernameNotFoundException("강퇴된 계정입니다.");
+        }
+
         return new PrincipalDetails(resultUser);
     }
 }
