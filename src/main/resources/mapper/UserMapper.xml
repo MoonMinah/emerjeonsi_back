@@ -11,8 +11,18 @@
         SELECT COUNT(1) > 0 FROM TB_Users_Master WHERE userId = #{userId}
     </select>
 
-    <insert id="userInsert" parameterType="com.kosa.emerjeonsiBack.dto.User">
+    <insert id="userInsert" parameterType="com.kosa.emerjeonsiBack.dto.User" useGeneratedKeys="true" keyProperty="userNo">
         INSERT INTO TB_Users_Master (userId, password, email, userName, gender, birthday, phone, role, provider)
         VALUES (#{userId}, #{password}, #{email}, #{userName}, #{gender}, #{birthday}, #{phone}, #{role}, #{provider})
     </insert>
+
+    <update id="updateUserInfo" parameterType="com.kosa.emerjeonsiBack.dto.User">
+        UPDATE TB_Users_Master SET email = #{email}, userName = #{userName}, gender = #{gender}, birthday = #{birthday}, phone = #{phone}
+        WHERE userId = #{userId}
+    </update>
+
+    <update id="updateUserStatus">
+        UPDATE TB_Users_Master SET userStatus = #{userStatus}
+        WHERE userNo = #{userNo}
+    </update>
 </mapper>

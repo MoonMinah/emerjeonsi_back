@@ -66,6 +66,7 @@
 <!-- axios 라이브러리 추가 -->
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/common/userIconToggle.js"></script>
 <script src="/js/main/main.js"></script>
 

@@ -28,11 +28,10 @@ public class MainRestController {
     private MainService mainService;
 
     private final UserService userService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public MainRestController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public MainRestController(UserService userService) {
         this.userService = userService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @GetMapping("/home/data")
@@ -91,17 +90,20 @@ public class MainRestController {
             }
 
             // 비밀번호 암호화 후 저장
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            user.setProvider("origin");
+//            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+//            user.setProvider("origin");
+//
+//            int resultUser = userService.userInsert(user);
+//            log.info("resultUser = {}", resultUser);
+//
+//            if(resultUser > 0) {
+//                return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공");
+//            } else {
+//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원가입 실패");
+//            }
+            userService.signup(user);
 
-            int resultUser = userService.userInsert(user);
-            log.info("resultUser = {}", resultUser);
-
-            if(resultUser > 0) {
-                return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공");
-            } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원가입 실패");
-            }
+            return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공");
         } catch (Exception e) {
             log.error("회원가입 중 오류 발생 : ", e);
 
@@ -142,7 +144,7 @@ public class MainRestController {
 
             return ResponseEntity.ok(user);
         }
-        
+
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }
