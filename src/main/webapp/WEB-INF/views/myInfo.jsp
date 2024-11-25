@@ -53,7 +53,7 @@
                 <div class="error-message" id="phoneError"></div>
 
                 <input type="submit" class="myInfoUpdate-button" value="수정하기">
-                <input type="button" class="delete-account-button" va  lue="탈퇴하기" onclick="confirmDelete()">
+                <input type="button" class="delete-account-button" value="탈퇴하기" onclick="confirmDelete()">
                 <input type="reset" class="cancel-button" value="취소" onclick="history.back()">
             </form>
         </div>

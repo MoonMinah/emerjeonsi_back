@@ -33,12 +33,11 @@ function toggleMenu() {
 }
 
 function goToReservations() {
-    alert('예매 목록 페이지로 이동합니다.');
     window.location.href = '/user/myPage/myReservations';
 }
 
 function goToRefunds() {
-    alert('환불 내역 페이지로 이동합니다.');
+    window.location.href = '/user/myPage/refunds';
 }
 
 function goToUpdateInfo() {
