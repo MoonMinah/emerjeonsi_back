@@ -34,6 +34,4 @@ public class Payment {
         return this.paymentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
-
-
 }

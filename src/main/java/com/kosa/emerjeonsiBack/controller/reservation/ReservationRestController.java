@@ -19,6 +19,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @Slf4j
 @RequestMapping("/api/user")
@@ -33,19 +35,62 @@ public class ReservationRestController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/reservation")
-    public ResponseEntity<Integer> createReservation(@RequestBody Reservation reservation) {
-         reservationService.createReservation(reservation);
-         //reservationHistoryService.insertReservationHistory(reservation.getReservationNo(), reservation.getReservationStatus())
-        int reservationNo = reservation.getReservationNo(); // 생성된 reservationNo 가져오기
-        log.info("reservationNo : " + reservationNo);
-        try {
-            log.info("reservationNo1 : " + reservationNo);
-            return ResponseEntity.ok(reservationNo);
-        }catch (Exception e) {
-            log.error("Error creating reservation: ", e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    private User getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            // userId를 사용하여 데이터베이스에서 유저 정보 가져오기
+            return userService.selectUserByUserId(userDetails.getUsername());
         }
+        return null;
+    }
+
+    @PostMapping("/reservation")
+    public ResponseEntity<?> createReservation(@RequestBody Reservation reservation, Authentication authentication) {
+
+        // Spring Security에서 인증된 사용자 정보 가져오기
+        User user = getLoggedInUser();
+        if (user == null) {
+            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+        }
+
+        int userNo = user.getUserNo();
+
+        log.info("userNo: " + userNo);
+        // 중복 예매 확인
+        Integer  existingReservationNo = reservationService.checkDuplicateReservation(userNo, reservation.getExhibitionNo());
+        log.info("existingReservationNo: " + existingReservationNo);
+        if (existingReservationNo != null) {
+            // 중복된 예매가 있을 경우, 클라이언트로 예매 번호 반환
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of(
+                            "isDuplicate", true,
+                            "message", "이미 해당 전시에 대한 예매가 존재합니다.",
+                            "reservationNo", existingReservationNo
+                    ));
+        }
+
+        try {
+            reservation.setUserNo(userNo); // 예약에 사용자 정보 추가
+            reservationService.createReservation(reservation);
+            log.info("reservation created");
+            int reservationNo = reservation.getReservationNo();
+            return ResponseEntity.ok(reservationNo);
+        } catch (Exception e) {
+            log.error("예매 생성 중 오류 발생:", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("예매 생성에 실패했습니다.");
+        }
+    }
+
+    /**
+     * 예매 삭제
+     * @param reservationNo
+     * @return
+     */
+    @DeleteMapping("/{reservationNo}/cancel")
+    public ResponseEntity<Void> cancelReservation(@PathVariable int reservationNo) {
+        reservationService.deleteReservation(reservationNo);
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -54,8 +99,11 @@ public class ReservationRestController {
      * @return
      */
     @GetMapping("/reservation/{reservationNo}")
-    public ResponseEntity<Reservation> getReservationDetail(@PathVariable int reservationNo) {
+    public ResponseEntity<?> getReservationDetail(@PathVariable int reservationNo) {
         Reservation reservationDetail = reservationService.getReservationDetail(reservationNo);
+        if (reservationDetail == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("예약 정보를 찾을 수 없습니다.");
+        }
         log.info("reservation.getReservationNo : " + reservationDetail.getReservationNo());
         log.info("getReservationQuantity : " + reservationDetail.getReservationQuantity());
         log.info("getReservationPrice : " + reservationDetail.getReservationPrice());

@@ -61,6 +61,17 @@ public class MyPageReservaitonRestController {
         int total = reservationService.countReservationsByUserNo(userNo);
         int totalPages = reservationService.calculateTotalPages(total, size);
 
+        // **수정: total이 0일 경우 빈 데이터 반환**
+        if (total == 0) {
+            Map<String, Object> emptyResponse = new HashMap<>();
+            emptyResponse.put("reservations", Collections.emptyList());
+            emptyResponse.put("total", 0);
+            emptyResponse.put("pageSize", size);
+            emptyResponse.put("currentPage", page);
+            emptyResponse.put("totalPages", 0);
+            return ResponseEntity.ok(emptyResponse); // 정상 응답으로 반환
+        }
+
         if (page > totalPages) {
             return ResponseEntity.badRequest().body("잘못된 페이지 요청입니다.");
         }
@@ -83,6 +94,8 @@ public class MyPageReservaitonRestController {
 
         return ResponseEntity.ok(response);
     }
+
+
 
 
 }

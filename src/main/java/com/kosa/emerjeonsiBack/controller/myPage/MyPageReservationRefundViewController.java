@@ -22,4 +22,14 @@ public class MyPageReservationRefundViewController {
     public String myPageReservationRefundView() {
         return "myReservationsRefund";
     }
+
+    @GetMapping("/refunds")
+    public String refunds(){
+        return "myPageRefunds";
+    }
+
+    @GetMapping("/refundsDetail")
+    public String refundsDetail(){
+        return "myPageRefundsDetail";
+    }
 }

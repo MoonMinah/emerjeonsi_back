@@ -26,13 +26,28 @@ export function renderReservations(container, reservations, onDetailClick, onPay
         const infoContainer = document.createElement("div");
         infoContainer.className = "reservation-info";
 
+        // 결제 일시 (yyyy-MM-dd 형식 변환)
+        const paymentDate = reservation.payment.formattedPaymentDate;
+        const reservationDate = paymentDate.substring(0, 10);
+        console.log("reservationDate : " + reservationDate);
+        console.log("paymentDate : " + paymentDate);
+
+        const dateElement = document.createElement("p");
+        dateElement.textContent = `${reservationDate}`;
+        dateElement.className = "reservation-info";
+        infoContainer.appendChild(dateElement);
+
         const title = document.createElement("h3");
         title.textContent = reservation.exhibition.title;
         infoContainer.appendChild(title);
 
+
+
         const institution = document.createElement("p");
         institution.textContent = reservation.exhibition.cntcInsttNm;
         infoContainer.appendChild(institution);
+
+
 
         const price = document.createElement("p");
         price.textContent = `가격: ${formatPrice(reservation.reservationPrice)}`;

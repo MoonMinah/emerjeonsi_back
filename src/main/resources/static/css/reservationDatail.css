@@ -183,13 +183,15 @@ body {
     gap: 8px;
 }
 .custom-select-box img {
-    width: 56px;
+    width: 72px;
     height: auto;
 }
 .form-control {
-
     padding: 4px;
-    font-size: 13px;
+    width: 60%;
+    height: 30px;
+    font-size: 14px;
+
 }
 .btn-primary {
     width: 100%;
@@ -212,6 +214,43 @@ body {
     text-align: center;
     margin-top: 8px;
 }
+
+.payment-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.payment-button {
+    display: flex;
+    align-items: center;
+    background-color: #ffde00; /* 카카오페이 브랜드 컬러 */
+    border: none;
+    border-radius: 8px;
+    padding: 5px 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.payment-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.payment-icon {
+    height: 40px; /* 아이콘 크기 조절 */
+    margin-right: 10px; /* 아이콘과 텍스트 간 간격 */
+}
+
+.payment-text {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+}
+
+
 
 
 .imp-dialog {

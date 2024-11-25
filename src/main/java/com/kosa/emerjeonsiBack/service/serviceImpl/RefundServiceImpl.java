@@ -1,6 +1,6 @@
 package com.kosa.emerjeonsiBack.service.serviceImpl;
 
-import com.kosa.emerjeonsiBack.dto.PaymentHistory;
+import com.kosa.emerjeonsiBack.dto.Reservation;
 import com.kosa.emerjeonsiBack.mapper.RefundMapper;
 import com.kosa.emerjeonsiBack.service.RefundService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -170,5 +170,47 @@ public class RefundServiceImpl implements RefundService {
 
         return null;
     }
+
+    /**
+     * 환불 목록 조회
+     * @param userNo
+     * @param offset
+     * @param size
+     * @return
+     */
+    @Override
+    public List<Reservation> getRefundsByUserNo(int userNo, int offset, int size) {
+        return refundMapper.getRefundsByUserNo(userNo, offset, size);
+    }
+
+    /**
+     * 사용자 번호에 따른 환불 목록 총 개수 조회.
+     * @param userNo
+     * @return
+     */
+    @Override
+    public int countRefundsByUserNo(int userNo) {
+        return refundMapper.countRefundsByUserNo(userNo);
+    }
+
+    @Override
+    public int calculateTotalPages(int totalCount, int pageSize) {
+        if (pageSize <= 0) {
+            throw new IllegalArgumentException("Page size must be greater than 0");
+        }
+        return (int) Math.ceil((double) totalCount / pageSize);
+    }
+
+    /**
+     * 환불 목록의 상세내역
+     * @param paymentNo
+     * @return
+     */
+    @Override
+    public Reservation getMyRefundsDetail(int paymentNo) {
+        return refundMapper.getMyRefundsDetail(paymentNo);
+    }
+
+
 }
 
