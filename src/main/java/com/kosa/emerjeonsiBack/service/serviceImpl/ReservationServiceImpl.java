@@ -37,6 +37,30 @@ public class ReservationServiceImpl implements ReservationService {
          reservationHistoryMapper.insertReservationHistory(reservationHistory);
     }
 
+    /**
+     * 예매 중복 확인.
+     * @param userNo
+     * @param exhibitionNo
+     * @return
+     */
+    @Override
+    public Integer checkDuplicateReservation(int userNo, int exhibitionNo) {
+        return reservationMapper.checkDuplicateReservation(userNo, exhibitionNo);
+    }
+
+
+    /**
+     * 예매 삭제 처리
+     * @param reservationNo
+     */
+    @Override
+    @Transactional
+    public void deleteReservation(int reservationNo) {
+        reservationMapper.deleteReservation(reservationNo);
+    }
+
+
+
 
     /**
      * 서비스 - 결제 상세

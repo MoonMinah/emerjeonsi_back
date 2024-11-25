@@ -27,4 +27,110 @@
         INSERT INTO TB_Payments_History (paymentNo, paymentStatus, paymentEventTimestamp, refundAmount)
         VALUES (#{paymentNo}, #{paymentStatus}, CURRENT_TIMESTAMP, #{refundAmount})
     </insert>
+
+    <!-- 복잡한 결과 매핑을 위한 resultMap 설정 -->
+    <resultMap id="reservationResultMap" type="com.kosa.emerjeonsiBack.dto.Reservation">
+        <!-- ReservationDTO 필드 매핑 -->
+        <id property="reservationNo" column="reservationNo"/>
+        <result property="userNo" column="userNo"/>
+        <result property="exhibitionNo" column="exhibitionNo"/>
+        <result property="reservationPrice" column="reservationPrice"/>
+        <result property="reservationQuantity" column="reservationQuantity"/>
+        <result property="reservationStatus" column="reservationStatus"/>
+
+        <!-- ExhibitionDTO를 위한 매핑 -->
+        <association property="exhibition" javaType="com.kosa.emerjeonsiBack.dto.Exhibition">
+            <id property="exhibitionNo" column="exhibitionNo"/>
+            <result property="title" column="title"/>
+            <result property="cntcInsttNm" column="cntcInsttNm"/>
+            <result property="issuedDate" column="issuedDate"/>
+            <result property="description" column="description"/>
+            <result property="imageUrl" column="imageUrl"/>
+            <result property="viewCount" column="viewCount"/>
+            <result property="eventSite" column="eventSite"/>
+            <result property="contactPoint" column="contactPoint"/>
+            <result property="startPeriod" column="startPeriod"/>
+            <result property="endPeriod" column="endPeriod"/>
+            <result property="adultPrice" column="adultPrice"/>
+            <result property="infantPrice" column="infantPrice"/>
+            <result property="seniorPrice" column="seniorPrice"/>
+        </association>
+
+        <!-- PaymentDTO를 위한 매핑 -->
+        <association property="payment" javaType="com.kosa.emerjeonsiBack.dto.Payment">
+            <id property="paymentNo" column="paymentNo"/>
+            <result property="paymentUid" column="paymentUid"/>
+            <result property="paymentMethod" column="paymentMethod"/>
+            <result property="paymentStatus" column="paymentStatus"/>
+            <result property="paymentPrice" column="paymentPrice"/>
+            <result property="paymentDate" column="paymentDate"/>
+        </association>
+        <!-- ReservationHistory를 위한 매핑 -->
+        <association property="reservationHistory" javaType="com.kosa.emerjeonsiBack.dto.ReservationHistory">
+            <id property="reservationHistoryNo" column="reservationHistoryNo"/>
+            <result property="reservationEventTimeStamp" column="reservationEventTimeStamp"/>
+        </association>
+
+        <association property="paymentHistory" javaType="com.kosa.emerjeonsiBack.dto.PaymentHistory">
+            <id property="paymentHistoryNo" column="paymentHistoryNo"/>
+            <id property="paymentNo" column="paymentNo"/>
+            <result property="paymentStatus" column="paymentStatus"/>
+            <result property="refundAmount" column="refundAmount"/>
+            <result property="paymentEventTimestamp" column="paymentEventTimestamp"/>
+        </association>
+    </resultMap>
+    <!-- 사용자 번호에 따른 환불 목록 조회 쿼리 -->
+    <select id="getRefundsByUserNo" resultMap="reservationResultMap" parameterType="int">
+        SELECT
+        MAX(ex.exhibitionNo) AS exhibitionNo, MAX(ex.title) AS title, MAX(ex.cntcInsttNm) AS cntcInsttNm,
+        MAX(ex.issuedDate) AS issuedDate, MAX(ex.description) AS description, MAX(ex.imageUrl) AS imageUrl,
+        MAX(ex.viewCount) AS viewCount, MAX(ex.eventSite) AS eventSite, MAX(ex.contactPoint) AS contactPoint,
+        MAX(ex.startPeriod) AS startPeriod, MAX(ex.endPeriod) AS endPeriod,
+        rm.reservationNo, rm.userNo, rm.exhibitionNo, rm.reservationPrice, rm.reservationQuantity, rm.reservationStatus,
+        pm.paymentNo, pm.paymentUid, pm.paymentMethod, pm.paymentStatus, pm.paymentPrice, pm.paymentDate,
+        MAX(ph.refundAmount) AS refundAmount, MAX(ph.paymentEventTimestamp) AS paymentEventTimestamp
+        FROM tb_exhibitions_master ex
+        JOIN tb_reservations_master rm ON ex.exhibitionNo = rm.exhibitionNo
+        JOIN tb_payments_master pm ON rm.reservationNo = pm.reservationNo
+        JOIN tb_payments_history ph ON pm.paymentNo = ph.paymentNo
+        JOIN tb_users_master um ON um.userNo = rm.userNo
+        WHERE rm.userNo = 6
+        AND pm.paymentStatus = '환불'
+        AND rm.reservationStatus = '취소'
+        GROUP BY
+        rm.reservationNo, rm.userNo, rm.exhibitionNo, rm.reservationPrice, rm.reservationQuantity, rm.reservationStatus,
+        pm.paymentNo, pm.paymentUid, pm.paymentMethod, pm.paymentStatus, pm.paymentPrice, pm.paymentDate
+        ORDER BY rm.reservationNo DESC
+        LIMIT #{offset}, #{size};
+    </select>
+    <!-- 사용자 번호에 따른 환불 목록 총 개수 조회 -->
+
+    <select id="countRefundsByUserNo" resultType="int">
+        SELECT COUNT(*)
+        FROM tb_reservations_master rm
+        JOIN tb_payments_master pm ON rm.reservationNo = pm.reservationNo
+        WHERE rm.userNo = #{userNo}
+        AND pm.paymentStatus = '환불'
+        AND rm.reservationStatus = '취소';
+    </select>
+    <select id="getMyRefundsDetail" resultMap="reservationResultMap" parameterType="int">
+        SELECT
+        em.title, em.cntcInsttNm, em.imageUrl, em.eventSite, em.startPeriod, em.endPeriod, em.adultPrice, em.infantPrice, em.seniorPrice,
+        rm.reservationNo, pm.paymentNo, pm.paymentPrice, pm.paymentMethod, ph.paymentHistoryNo, ph.paymentEventTimestamp, ph.refundAmount,
+        ph.paymentStatus
+        FROM
+        tb_exhibitions_master em
+        INNER JOIN
+        tb_reservations_master rm ON em.exhibitionNo = rm.exhibitionNo
+        INNER JOIN
+        tb_payments_master pm ON rm.reservationNo = pm.reservationNo
+        INNER JOIN
+        tb_payments_history ph ON pm.paymentNo = ph.paymentNo
+        WHERE
+        pm.paymentNo = #{paymentNo}
+        AND ph.paymentStatus = '환불'
+        ORDER BY
+        ph.paymentEventTimestamp DESC
+        LIMIT 1;
+    </select>
 </mapper>

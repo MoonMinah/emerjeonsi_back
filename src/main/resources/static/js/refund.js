@@ -34,7 +34,8 @@ function fetchRefundData() {
             // 환불 버튼 이벤트 추가
             const refundBtn = document.getElementById('refund-btn');
             refundBtn.addEventListener('click', () => {
-                processRefund(payment.paymentNo, data.reservationNo, payment.paymentUid, payment.paymentPrice);
+                confirmRefund(payment.paymentNo, data.reservationNo, payment.paymentUid, payment.paymentPrice);
+                // processRefund(payment.paymentNo, data.reservationNo, payment.paymentUid, payment.paymentPrice);
             });
         })
         .catch(error => {
@@ -44,24 +45,95 @@ function fetchRefundData() {
 }
 
 
+// 사용자 확인 모달 창
+function confirmRefund(paymentNo, reservationNo, paymentUid, paymentPrice) {
+    Swal.fire({
+        title: '환불 진행 확인',
+        text: '환불을 진행하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+    }).then(result => {
+        if (result.isConfirmed) {
+            // 확인 버튼 클릭 시 환불 진행
+            processRefund(paymentNo, reservationNo, paymentUid, paymentPrice);
+        }
+    });
+}
 
-    function processRefund(paymentNo, reservationNo, paymentUid, paymentPrice) {
-    console.log("paymentNo : " + paymentNo + ", reservationNo : " + reservationNo + ", paymentUid : " + paymentUid + ", paymentPrice : " + paymentPrice);
-        axios.post('/api/user/myPage/processRefund', {
-            paymentNo,                 // 숫자 그대로 전달
-            reservationNo,             // 숫자 그대로 전달
-            imp_uid: paymentUid,
-            amount: paymentPrice       // 숫자 그대로 전달
-        })
-            .then(response => {
-                alert('환불이 성공적으로 처리되었습니다.');
-                window.location.href = "/user/myPage/myReservations";  // 예매 목록 페이지로 이동
-            })
-            .catch(error => {
-                console.error("환불 요청 실패:", error);
-                alert("환불 요청 처리 중 문제가 발생했습니다.");
+// 환불 처리 함수
+function processRefund(paymentNo, reservationNo, paymentUid, paymentPrice) {
+    console.log("환불 진행 시작 - paymentNo:", paymentNo, "reservationNo:", reservationNo, "paymentUid:", paymentUid, "paymentPrice:", paymentPrice);
+
+    axios.post('/api/user/myPage/processRefund', {
+        paymentNo,                 // 숫자 그대로 전달
+        reservationNo,             // 숫자 그대로 전달
+        imp_uid: paymentUid,
+        amount: paymentPrice       // 숫자 그대로 전달
+    })
+        .then(response => {
+            Swal.fire({
+                title: '환불 성공',
+                text: '환불이 성공적으로 처리되었습니다!',
+                icon: 'success',
+                confirmButtonText: '확인'
+            }).then(result => {
+                if (result.isConfirmed) {
+                    // 사용자가 확인 버튼을 누른 후 실행
+                    window.location.href = "/user/myPage/myReservations";  // 예매 목록 페이지로 이동
+                }
             });
-    }
+        })
+        .catch(error => {
+            console.error("환불 요청 실패:", error);
+            Swal.fire({
+                title: '환불 실패',
+                text: '환불 요청 처리 중 문제가 발생했습니다.',
+                icon: 'error',
+                confirmButtonText: '확인'
+            });
+        });
+}
+
+
+
+
+// function processRefund(paymentNo, reservationNo, paymentUid, paymentPrice) {
+//     console.log("paymentNo : " + paymentNo + ", reservationNo : " + reservationNo + ", paymentUid : " + paymentUid + ", paymentPrice : " + paymentPrice);
+//
+//     axios.post('/api/user/myPage/processRefund', {
+//         paymentNo,                 // 숫자 그대로 전달
+//         reservationNo,             // 숫자 그대로 전달
+//         imp_uid: paymentUid,
+//         amount: paymentPrice       // 숫자 그대로 전달
+//     })
+//         .then(response => {
+//             Swal.fire({
+//                 title: '환불 진행 확인',
+//                 text: '환불을 진행하시겠습니까?',
+//                 icon: 'warning',
+//                 showCancelButton: true,
+//                 confirmButtonText: '확인',
+//                 cancelButtonText: '취소',
+//             }).then(result => {
+//                 if (result.isConfirmed) {
+//                     // 사용자가 확인 버튼을 누른 후 실행
+//                     window.location.href = "/user/myPage/myReservations";  // 예매 목록 페이지로 이동
+//                 }
+//             });
+//         })
+//         .catch(error => {
+//             console.error("환불 요청 실패:", error);
+//             Swal.fire({
+//                 title: '환불 실패',
+//                 text: '환불 요청 처리 중 문제가 발생했습니다.',
+//                 icon: 'error',
+//                 confirmButtonText: '확인'
+//             });
+//         });
+// }
+
 
 // 페이지 로드 시 데이터 가져오기
 document.addEventListener('DOMContentLoaded', fetchRefundData);

@@ -1,16 +1,24 @@
 package com.kosa.emerjeonsiBack.controller.myPage;
 
 import com.kosa.emerjeonsiBack.dto.Reservation;
+import com.kosa.emerjeonsiBack.dto.User;
 import com.kosa.emerjeonsiBack.service.RefundService;
 import com.kosa.emerjeonsiBack.service.ReservationService;
+import com.kosa.emerjeonsiBack.service.UserService;
 import com.kosa.emerjeonsiBack.service.serviceImpl.RefundServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -23,6 +31,8 @@ public class MyPageReservationRefundRestController {
     @Autowired
     private RefundService refundService;
 
+    @Autowired
+    private UserService userService;
 
     /**
      * 환불페이지 데이터 렌더링
@@ -81,6 +91,81 @@ public class MyPageReservationRefundRestController {
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("환불 처리 중 오류가 발생했습니다.");
+        }
+    }
+
+    private User getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            // userId를 사용하여 데이터베이스에서 유저 정보 가져오기
+            return userService.selectUserByUserId(userDetails.getUsername());
+        }
+        return null;
+    }
+
+    @GetMapping("/refunds")
+    public ResponseEntity<?>getRefunds( @RequestParam(value = "page", defaultValue = "1") int page,
+                                        @RequestParam(value = "size", defaultValue = "4") int size) {
+        if (page < 1) {
+            page = 1; // page가 1 미만일 경우 기본값 설정
+        }
+
+        User user = getLoggedInUser();
+        if (user == null) {
+            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+        }
+
+        int userNo = user.getUserNo();
+        int total = refundService.countRefundsByUserNo(userNo);
+        int totalPages = refundService.calculateTotalPages(total, size);
+
+        // **수정: total이 0일 경우 빈 데이터 반환**
+        if (total == 0) {
+            Map<String, Object> emptyResponse = new HashMap<>();
+            emptyResponse.put("reservations", Collections.emptyList());
+            emptyResponse.put("total", 0);
+            emptyResponse.put("pageSize", size);
+            emptyResponse.put("currentPage", page);
+            emptyResponse.put("totalPages", 0);
+            return ResponseEntity.ok(emptyResponse); // 정상 응답으로 반환
+        }
+
+        if (page > totalPages) {
+            return ResponseEntity.badRequest().body("잘못된 페이지 요청입니다.");
+        }
+
+        int offset = (page - 1) * size;
+        List<Reservation> reservations = refundService.getRefundsByUserNo(userNo, offset, size);
+        log.info("Total reservations: {}, Page size: {}, Total pages: {}", total, size, totalPages);
+        log.info("Fetched reservations: {}", reservations);
+        System.out.println("페이지 번호: " + page);
+        System.out.println("오프셋: " + offset);
+        System.out.println("요청 크기: " + size);
+        System.out.println("반환된 데이터: " + reservations);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("reservations", reservations);
+        response.put("total", total);
+        response.put("pageSize", size);
+        response.put("currentPage", page);
+        response.put("totalPages", totalPages);
+        log.info("Response(toString): {}", response.toString());
+        log.info("Response(reservations): {}", response.get("reservations").toString());
+        log.info("Response Data: {}", response);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/refundsDetail")
+    public ResponseEntity<?> getRefundDetail(@RequestParam int paymentNo) {
+        try {
+            Reservation refundDetail = refundService.getMyRefundsDetail(paymentNo);
+            log.info("환불 상세내역 : " + refundDetail);
+            return ResponseEntity.ok(refundDetail);
+        } catch (Exception e) {
+            log.error("환불 상세내역 가져오기 실패:", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("환불 상세 내역을 가져오는 데 실패했습니다.");
         }
     }
 }

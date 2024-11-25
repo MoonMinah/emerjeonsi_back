@@ -1,11 +1,17 @@
 package com.kosa.emerjeonsiBack.service;
 
 import com.kosa.emerjeonsiBack.dto.Reservation;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface ReservationService {
     public void createReservation(Reservation reservation); //예매 등록
+
+    public Integer checkDuplicateReservation(int userNo, int exhibitionNo); //예매 중복 확인.
+
+
+    public void deleteReservation(int reservationNo);// 예매 삭제
 
     public Reservation getReservationDetail(int reservationNo); //예매 상세 페이지 조회
 

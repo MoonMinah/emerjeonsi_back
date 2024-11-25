@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="/css/refund.css">
 </head>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <body>
 <div class="header">
     <button class="back-btn" onclick="goBack()">←</button>
@@ -36,6 +38,7 @@
     <p class="notice">티켓 유효기간 이후에는 취소 및 환불이 되지 않습니다.</p>
     <button class="refund-btn" id="refund-btn">환불</button>
 </div>
+<script src="/js/common/userIconToggle.js"></script>
 <script src="/js/refund.js"></script>
 </body>
 </html>

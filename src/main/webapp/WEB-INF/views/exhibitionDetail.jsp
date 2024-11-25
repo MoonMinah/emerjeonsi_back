@@ -7,6 +7,7 @@
     <title>전시 상세 페이지</title>
 
     <link rel="stylesheet" href="/css/exhibitionDetail.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 <body>

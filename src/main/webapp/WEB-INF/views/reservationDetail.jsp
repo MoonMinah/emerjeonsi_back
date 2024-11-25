@@ -9,6 +9,7 @@
     <script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -43,10 +44,10 @@
     <!-- 주문 내역 섹션 -->
     <div class="order-summary">
         <h3>상세 주문 내역</h3>
-        <p><strong>전시 번호:</strong> <span id="exhibitionNo"></span></p>
+<%--        <p><strong>전시 번호:</strong> <span id="exhibitionNo"></span></p>--%>
         <p><strong>예매 금액:</strong> <span id="reservationPrice"></span></p>
         <p><strong>총 티켓 수량:</strong> <span id="reservationQuantity"></span></p>
-        <p><strong>총 금액:</strong> <span id="totalPrice"></span></p>
+<%--        <p><strong>총 금액:</strong> <span id="totalPrice"></span></p>--%>
         <p><strong>선택된 옵션:</strong> <span id="selectedDetails"></span></p>
     </div>
 
@@ -54,11 +55,17 @@
     <div class="custom-select-box">
         <img id="currentPaymentIcon" class="payment-icon" src="/img/payment_icon_yellow_medium.png" alt="">
         <select id="paymentMethodSelect" class="form-control">
-            <option value="kakaopay" data-icon="/img/payment_icon_yellow_medium.png">카카오페이</option>
-            <option value="inicis" data-icon="/img/ci_KG_JPG.jpg">KG이니시스</option>
+            <option value="kakaopay" selected data-icon="/img/payment_icon_yellow_medium.png">카카오페이</option>
+<%--            <option value="inicis" disabled data-icon="/img/ci_KG_JPG.jpg">KG이니시스</option>--%>
         </select>
     </div>
     <br>
+<%--    <div class="payment-button-container">--%>
+<%--        <button id="kakaoPayButton" class="payment-button">--%>
+<%--            <img id="kakaoPayIcon" class="payment-icon" src="/img/payment_icon_yellow_medium.png" alt="카카오페이">--%>
+<%--            <span class="payment-text">카카오페이</span>--%>
+<%--        </button>--%>
+<%--    </div>--%>
     <button id="payment" class="btn btn-primary">결제하기</button>
 
     <p class="notice">전시 시작일로부터는 취소 및 환불이 되지 않습니다.</p>

@@ -24,6 +24,24 @@
         ORDER BY reservationNo DESC
         LIMIT 1
     </select>
+
+<!--  예매 중복 검사  -->
+    <select id="checkDuplicateReservation" parameterType="map" resultType="int">
+        SELECT reservationNo
+        FROM tb_reservations_master
+        WHERE userNo = #{userNo}
+        AND exhibitionNo = #{exhibitionNo}
+        AND reservationStatus = '결제대기'
+        LIMIT 1;
+    </select>
+
+    <!-- 예매 삭제 -->
+    <delete id="deleteReservation" parameterType="int">
+        DELETE FROM TB_Reservations_Master
+        WHERE reservationNo = #{reservationNo}
+    </delete>
+
+
     <!-- 서비스 - 결제 상세 -->
     <select id="getReservationDetail" parameterType="int" resultMap="reservationResultMap">
         SELECT *

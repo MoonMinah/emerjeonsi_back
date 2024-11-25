@@ -73,8 +73,16 @@ function submitReservation() {
                 proceedWithReservation(response.data); // 로그인된 사용자 정보 전달
             } else {
                 // 로그인되지 않은 상태
-                alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
-                window.location.href = '/login'; // 로그인 페이지로 리다이렉트
+                Swal.fire({
+                    title: '로그인이 필요합니다',
+                    text: '로그인 페이지로 이동합니다.',
+                    icon: 'warning',
+                    confirmButtonText: '확인'
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/login'; // 로그인 페이지로 리다이렉트
+                    }
+                });
             }
         })
         .catch(error => {
@@ -82,26 +90,40 @@ function submitReservation() {
 
             // 인증 실패로 인한 401 응답 처리
             if (error.response && error.response.status === 401) {
-                alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
-                window.location.href = '/login'; // 로그인 페이지로 리다이렉트
+                Swal.fire({
+                    title: '로그인이 필요합니다',
+                    text: '예매를 하시려면 로그인을 하셔야 합니다.',
+                    icon: 'error',
+                    confirmButtonText: '확인'
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/login'; // 로그인 페이지로 리다이렉트
+                    }
+                });
             } else {
-                alert("로그인 상태 확인 중 오류가 발생했습니다.");
+                Swal.fire({
+                    title: '오류 발생',
+                    text: '로그인 상태 확인 중 문제가 발생했습니다.',
+                    icon: 'error',
+                    confirmButtonText: '확인'
+                });
             }
         });
 }
 
+
 function proceedWithReservation(user) {
-    // 예약 데이터 수집
-    const quantity1 = parseInt(document.getElementById("quantity1").innerText);
-    const quantity2 = parseInt(document.getElementById("quantity2").innerText);
-    const quantity3 = parseInt(document.getElementById("quantity3").innerText);
+    const quantity1 = parseInt(document.getElementById("quantity1").innerText) || 0;
+    const quantity2 = parseInt(document.getElementById("quantity2").innerText) || 0;
+    const quantity3 = parseInt(document.getElementById("quantity3").innerText) || 0;
 
     const reservationPrice = (5000 * quantity1) + (1000 * quantity2) + (3000 * quantity3);
     const reservationQuantity = quantity1 + quantity2 + quantity3;
+
+    const exhibitionNo = window.location.pathname.split('/')[2];
     const rawExhibitionTitle = document.querySelector("#exhibitionTitle").innerText;
     const exhibitionTitle = cleanAndTrimTitle(rawExhibitionTitle);
 
-    const exhibitionNo = window.location.pathname.split('/')[2];
     const imageUrl = document.querySelector(".banner img").src;
 
     const reservationData = {
@@ -109,10 +131,8 @@ function proceedWithReservation(user) {
         exhibitionNo: exhibitionNo,
         reservationPrice: reservationPrice,
         reservationQuantity: reservationQuantity,
-        exhibitionTitle: exhibitionTitle,
     };
 
-    // 예매 생성 API 호출
     axios.post('/api/user/reservation', reservationData)
         .then(response => {
             const reservationNo = response.data;
@@ -122,10 +142,72 @@ function proceedWithReservation(user) {
             window.location.href = `/user/reservationDetail?reservationNo=${reservationNo}&exhibitionNo=${exhibitionNo}&adult=${quantity1}&infant=${quantity2}&senior=${quantity3}&price=${reservationPrice}&quantity=${reservationQuantity}&title=${exhibitionTitle}&imageUrl=${encodeURIComponent(imageUrl)}`;
         })
         .catch(error => {
-            console.error("예매 처리 중 오류 발생:", error);
-            alert("예매 중 문제가 발생했습니다. 다시 시도해주세요.");
+            if (error.response && error.response.status === 409) {
+                const existingReservationNo = error.response.data.reservationNo;
+                console.log("중복된 예매 번호:", existingReservationNo);
+
+                Swal.fire({
+                    title: "결제 대기 중인 예매가 있습니다.",
+                    text: "결제를 진행하시겠습니까?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "결제 진행",
+                    cancelButtonText: "취소",
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        // 중복된 예매 상세 페이지로 이동
+                        window.location.href = `/user/reservationDetail?reservationNo=${existingReservationNo}&isDuplicate=true`;
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        // 취소 선택 시 예매 삭제 처리
+                        cancelReservationHandler(existingReservationNo);
+                    }
+                });
+            } else {
+                console.error("예매 처리 중 오류 발생:", error);
+                Swal.fire({
+                    title: "오류 발생",
+                    text: "예매 중 문제가 발생했습니다. 다시 시도해주세요.",
+                    icon: "error",
+                });
+            }
         });
 }
+
+// 예매 취소 처리 함수
+function cancelReservationHandler(reservationNo) {
+    Swal.fire({
+        title: "예매를 취소하시겠습니까?",
+        text: "취소하면 예매 및 예매 이력이 삭제됩니다.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "예",
+        cancelButtonText: "아니요",
+    }).then(result => {
+        if (result.isConfirmed) {
+            // 예매 취소 API 호출
+            axios.delete(`/api/user/${reservationNo}/cancel`)
+                .then(() => {
+                    Swal.fire({
+                        title: "취소 완료",
+                        text: "예매가 성공적으로 취소되었습니다.",
+                        icon: "success",
+                    }).then(() => {
+                        // 취소 후 메인 페이지로 리다이렉트
+                        window.location.href = "/home";
+                    });
+                })
+                .catch(error => {
+                    console.error("예매 취소 중 오류 발생:", error);
+                    Swal.fire({
+                        title: "오류 발생",
+                        text: "예매 취소에 실패했습니다. 다시 시도해주세요.",
+                        icon: "error",
+                    });
+                });
+        }
+    });
+}
+
 
 
 
