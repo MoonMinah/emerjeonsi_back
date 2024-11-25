@@ -24,10 +24,14 @@ public class PrincipalDetailsService implements UserDetailsService {
         User resultUser = userMapper.selectUserByUserId(userId);
         log.info("loadUserByUsername() : resultUser = {}", resultUser);
 
-        if(resultUser != null) {
-            return new PrincipalDetails(resultUser);
+        if(resultUser == null) {
+            throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
         }
 
-        return null;
+        if("탈퇴".equals(resultUser.getUserStatus())) {
+            throw new UsernameNotFoundException("탈퇴된 계정입니다.");
+        }
+
+        return new PrincipalDetails(resultUser);
     }
 }

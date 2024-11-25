@@ -8,13 +8,16 @@ import lombok.Data;
 
 @Data
 public class User {
+    public interface CreateUser {}
+    public interface UpdateUser {}
+
     private int userNo;
 
-    @NotBlank(message = "아이디는 필수 입력 항목입니다.")
+    @NotBlank(message = "아이디는 필수 입력 항목입니다.", groups = {CreateUser.class, UpdateUser.class})
     @Size(min = 4, max = 20, message = "아이디는 4~20자 사이로 입력해주세요.")
     private String userId;
 
-    @NotBlank(message = "비밀번호는 필수 입력 항목입니다.")
+    @NotBlank(message = "비밀번호는 필수 입력 항목입니다.", groups = {CreateUser.class, UpdateUser.class})
     @Size(min = 8, max = 20, message = "비밀번호는 8~20자 사이로 입력해주세요.")
     @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}", message = "비밀번호는 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.")
     private String password;
@@ -32,13 +35,14 @@ public class User {
     private String gender;
 
     @NotBlank(message = "생년월일은 필수 항목입니다.")
-    @Pattern(regexp = "^\\d{8}$", message = "생년월일은 'YYYYMMDD' 형식의 8자리로 입력해주세요.")
+    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$|^\\d{8}$", message = "생년월일은 'YYYYMMDD' 또는 'YYYY-MM-DD' 형식으로 입력해주세요.")
     private String birthday;
 
     @NotBlank(message = "전화번호는 필수 항목입니다.")
-    @Pattern(regexp = "^01[0-9]-?([0-9]{3,4})-?([0-9]{4})$", message = "전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)")
+    @Pattern(regexp = "^01[0-9]-([0-9]{3,4})-([0-9]{4})$", message = "전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)")
     private String phone;
 
     private String role;
     private String provider;
+    private String userStatus;
 }

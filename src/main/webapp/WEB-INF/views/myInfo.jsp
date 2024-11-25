@@ -24,12 +24,15 @@
     <div class="content-container">
         <div class="myInfo-container">
             <h2 class="myInfo-title">내 정보 수정</h2>
-            <form id="myInfoForm" action="/api/signup" method="post">
+            <form id="myInfoForm" novalidate>
                 <input type="hidden" name="role" value="ROLE_USER">
-                <input type="text" placeholder="아이디" name="userId" class="input-field" readonly disabled required>
-                <input type="password" placeholder="비밀번호" name="password" class="input-field" readonly disabled required>
-                <input type="email" placeholder="이메일" name="email" class="input-field" required>
-                <input type="text" placeholder="이름" name="userName" class="input-field" required>
+                <input type="text" placeholder="아이디" name="userId" id="userId" class="input-field" readonly disabled required>
+                <input type="password" placeholder="비밀번호" name="password" id="password" class="input-field" readonly disabled required>
+                <input type="email" placeholder="이메일" name="email" id="email" class="input-field" required>
+                <div class="error-message" id="emailError"></div>
+
+                <input type="text" placeholder="이름" name="userName" id="userName" class="input-field" required>
+                <div class="error-message" id="userNameError"></div>
 
                 <div class="gender-container">
                     <div class="gender-option">
@@ -41,12 +44,17 @@
                         <label for="female">여자</label>
                     </div>
                 </div>
+                <div class="error-message" id="genderError"></div>
 
-                <input type="text" placeholder="생년월일" name="birthday" class="input-field" required>
-                <input type="text" placeholder="전화번호" name="phone" class="input-field" required>
+                <input type="text" placeholder="생년월일" name="birthday" id="birthday" class="input-field" required>
+                <div class="error-message" id="birthdayError"></div>
+
+                <input type="text" placeholder="전화번호" name="phone" id="phone" class="input-field" required>
+                <div class="error-message" id="phoneError"></div>
 
                 <input type="submit" class="myInfoUpdate-button" value="수정하기">
-                <input type="reset" class="cancel-button" value="취소">
+                <input type="button" class="delete-account-button" va  lue="탈퇴하기" onclick="confirmDelete()">
+                <input type="reset" class="cancel-button" value="취소" onclick="history.back()">
             </form>
         </div>
     </div>
@@ -75,7 +83,8 @@
     <!-- axios 라이브러리 추가 -->
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/js/common/userIconToggle.js"></script>
-    <script src="/js/main/myInfo.js"></script>
+    <script src="/js/myPage/myInfo.js"></script>
 </body>
 </html>

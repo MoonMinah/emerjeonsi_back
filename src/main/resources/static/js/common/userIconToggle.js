@@ -42,14 +42,31 @@ function goToRefunds() {
 }
 
 function goToUpdateInfo() {
-    alert('정보 수정 페이지로 이동합니다.');
-
-    window.location.href = "/user/mypage/myInfo"
+    window.location.href = "/user/mypage/myinfo"
 }
 
 function logout() {
-    alert('로그아웃되었습니다.');
-    window.location.href = '/logout';
+    Swal.fire({
+        icon: 'info',
+        title: '로그아웃',
+        text: '정말 로그아웃 하시겠습니까?',
+        showCancelButton: true,
+        confirmButtonText: '네, 로그아웃',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#007bff',
+        cancelButtonColor: '#dc3545'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                icon: 'success',
+                title: '로그아웃 완료',
+                text: '성공적으로 로그아웃되었습니다.',
+                confirmButtonColor: '#28a745'
+            }).then(() => {
+                window.location.href = '/logout';
+            });
+        }
+    });
 }
 
 function goToLogin() {

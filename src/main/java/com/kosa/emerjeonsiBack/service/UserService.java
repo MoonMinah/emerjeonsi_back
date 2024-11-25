@@ -8,4 +8,10 @@ public interface UserService {
     public Boolean existsByUserId(String userId);
 
     public int userInsert(User user);
+
+    public void signup(User user);
+
+    public boolean updateUserInfoAndHistory(User user, User existingUser);
+
+    public void withdrawUser(String userId);
 }
