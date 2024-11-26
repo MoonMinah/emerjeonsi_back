@@ -39,10 +39,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 </div>`;
             })
             .catch(error => {
-                console.error("Error fetching exhibition data:", error);
+                //console.error("Error fetching exhibition data:", error);
             });
     } else {
-        console.error("Exhibition number (exhibitionNo) not found in URL");
+        //console.error("Exhibition number (exhibitionNo) not found in URL");
     }
 });
 
@@ -66,7 +66,7 @@ function submitReservation() {
     // 로그인 상태 확인
     axios.get('/api/check-login') // 로그인 상태 확인 엔드포인트
         .then(response => {
-            console.log("로그인 상태 확인 성공:", response.data);
+            //console.log("로그인 상태 확인 성공:", response.data);
 
             // 로그인된 상태면 예매 진행
             if (response.status === 200 && response.data) {
@@ -86,7 +86,7 @@ function submitReservation() {
             }
         })
         .catch(error => {
-            console.error("로그인 상태 확인 실패:", error);
+            //console.error("로그인 상태 확인 실패:", error);
 
             // 인증 실패로 인한 401 응답 처리
             if (error.response && error.response.status === 401) {
@@ -136,7 +136,7 @@ function proceedWithReservation(user) {
     axios.post('/api/user/reservation', reservationData)
         .then(response => {
             const reservationNo = response.data;
-            console.log("예매 성공:", reservationNo);
+            //console.log("예매 성공:", reservationNo);
 
             // 예매 상세 페이지로 이동
             window.location.href = `/user/reservationDetail?reservationNo=${reservationNo}&exhibitionNo=${exhibitionNo}&adult=${quantity1}&infant=${quantity2}&senior=${quantity3}&price=${reservationPrice}&quantity=${reservationQuantity}&title=${exhibitionTitle}&imageUrl=${encodeURIComponent(imageUrl)}`;
@@ -144,7 +144,7 @@ function proceedWithReservation(user) {
         .catch(error => {
             if (error.response && error.response.status === 409) {
                 const existingReservationNo = error.response.data.reservationNo;
-                console.log("중복된 예매 번호:", existingReservationNo);
+                //console.log("중복된 예매 번호:", existingReservationNo);
 
                 Swal.fire({
                     title: "결제 대기 중인 예매가 있습니다.",
@@ -163,7 +163,7 @@ function proceedWithReservation(user) {
                     }
                 });
             } else {
-                console.error("예매 처리 중 오류 발생:", error);
+                //console.error("예매 처리 중 오류 발생:", error);
                 Swal.fire({
                     title: "오류 발생",
                     text: "예매 중 문제가 발생했습니다. 다시 시도해주세요.",
@@ -197,7 +197,7 @@ function cancelReservationHandler(reservationNo) {
                     });
                 })
                 .catch(error => {
-                    console.error("예매 취소 중 오류 발생:", error);
+                    //console.error("예매 취소 중 오류 발생:", error);
                     Swal.fire({
                         title: "오류 발생",
                         text: "예매 취소에 실패했습니다. 다시 시도해주세요.",

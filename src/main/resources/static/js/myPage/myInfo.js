@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     axios.get('/api/user/mypage/myinfo')
         .then(response => {
             const user = response.data;
-            console.log("불러온 사용자 정보 : ", user);
+            //console.log("불러온 사용자 정보 : ", user);
 
             document.querySelector("input[name='userId']").value = user.userId;
             document.querySelector("input[name='password']").value = user.password;
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.querySelector("input[name='phone']").value = user.phone;
         })
         .catch(error => {
-            console.error("회원 정보를 불러오는 중 에러 발생 : ", error);
+            //console.error("회원 정보를 불러오는 중 에러 발생 : ", error);
             Swal.fire({
                 icon: 'error',
                 title: '에러 발생',
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        console.log("보낼 데이터 : ", data);
+        //console.log("보낼 데이터 : ", data);
 
         // 수정된 정보 서버로 전송
         axios.put('/api/user/mypage/myinfo', data)
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // 유효성 검사 오류 메시지 표시
 function displayValidationErrors(errorMessages) {
-    console.log("서버에서 받은 오류 메시지 : ", errorMessages);
+    //console.log("서버에서 받은 오류 메시지 : ", errorMessages);
 
     const errorElements = document.querySelectorAll('.error-message');
     errorElements.forEach(element => {
@@ -89,7 +89,7 @@ function displayValidationErrors(errorMessages) {
 
     for (let field in errorMessages) {
         const message = errorMessages[field];
-        console.log('검사 중인 필드 :', field);
+        //console.log('검사 중인 필드 :', field);
 
         // 'userId'와 'password'는 수정 불가능한 필드이므로, 유효성 검사에서 제외
         if (field === 'userId' || field === 'password') {
@@ -98,7 +98,7 @@ function displayValidationErrors(errorMessages) {
 
         // 여기서 '0', '1' 등 숫자형 키를 텍스트로 변환하거나 필드명을 맞추도록 수정
         const fieldErrorElement = document.getElementById(`${field}Error`); // 숫자형을 문자열로 변환
-        console.log('필드 요소 : ', fieldErrorElement);
+        //console.log('필드 요소 : ', fieldErrorElement);
 
         if (fieldErrorElement) {
             fieldErrorElement.textContent = message;
@@ -109,7 +109,7 @@ function displayValidationErrors(errorMessages) {
                 fieldElement.classList.add('is-invalid');
             }
         } else {
-            console.warn(`오류 필드를 찾을 수 없습니다: ${field}`);
+            //console.warn(`오류 필드를 찾을 수 없습니다: ${field}`);
         }
     }
 }
@@ -138,7 +138,7 @@ function confirmDelete() {
                     });
                 })
                 .catch(error => {
-                    console.error('회원 탈퇴 중 에러 발생: ', error);
+                    //console.error('회원 탈퇴 중 에러 발생: ', error);
 
                     Swal.fire({
                         icon: 'error',
@@ -200,7 +200,7 @@ function applyFilter() {
             closeModal(); // 모달 닫기
         })
         .catch(error => {
-            console.error("Error searching exhibitions:", error);
+            //console.error("Error searching exhibitions:", error);
 
             Swal.fire({
                 icon: 'error',

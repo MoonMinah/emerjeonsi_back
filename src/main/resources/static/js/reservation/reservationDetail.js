@@ -16,7 +16,7 @@ function inferTicketCounts(totalPrice, adultPrice, infantPrice, seniorPrice, tot
         }
     }
 
-    console.error("유효한 조합을 찾지 못함");
+    //console.error("유효한 조합을 찾지 못함");
     return result;
 }
 
@@ -65,7 +65,7 @@ function loadReservationDetail(reservationNo) {
             });
         })
         .catch(error => {
-            console.error("예약 데이터를 가져오는 중 오류 발생:", error);
+            //console.error("예약 데이터를 가져오는 중 오류 발생:", error);
             Swal.fire({
                 title: "오류 발생",
                 text: "예약 데이터를 불러오는 중 문제가 발생했습니다.",
@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                     icon: "error",
                                     confirmButtonText: "확인"
                                 });
-                                console.error(error);
+                                //console.error(error);
                             });
                     } else {
                         Swal.fire({
@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
             })
             .catch((error) => {
-                console.error('사용자 정보를 가져오는 중 오류 발생:', error);
+                //console.error('사용자 정보를 가져오는 중 오류 발생:', error);
                 Swal.fire({
                     title: "로그인 필요",
                     text: "로그인이 필요합니다. 로그인 페이지로 이동합니다.",

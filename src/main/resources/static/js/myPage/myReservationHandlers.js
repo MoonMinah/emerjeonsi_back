@@ -29,8 +29,8 @@ export function renderReservations(container, reservations, onDetailClick, onPay
         // 결제 일시 (yyyy-MM-dd 형식 변환)
         const paymentDate = reservation.payment.formattedPaymentDate;
         const reservationDate = paymentDate.substring(0, 10);
-        console.log("reservationDate : " + reservationDate);
-        console.log("paymentDate : " + paymentDate);
+        //console.log("reservationDate : " + reservationDate);
+        //console.log("paymentDate : " + paymentDate);
 
         const dateElement = document.createElement("p");
         dateElement.textContent = `${reservationDate}`;
@@ -78,13 +78,13 @@ export function renderReservations(container, reservations, onDetailClick, onPay
 export function renderDetail(container, reservation) {
     // 컨테이너 확인
     if (!container) {
-        console.error("렌더링할 컨테이너가 존재하지 않습니다.");
+        //console.error("렌더링할 컨테이너가 존재하지 않습니다.");
         return;
     }
 
     // 데이터 검증
     if (!reservation || !reservation.exhibition) {
-        console.error("렌더링할 데이터가 올바르지 않습니다.", reservation);
+        //console.error("렌더링할 데이터가 올바르지 않습니다.", reservation);
         return;
     }
     // 날짜 포맷 함수
@@ -95,7 +95,7 @@ export function renderDetail(container, reservation) {
             if (isNaN(date.getTime())) throw new Error("Invalid time value");
             return date.toISOString().split('T')[0]; // yyyy-MM-dd 형식 반환
         } catch (error) {
-            console.error("날짜 변환 중 오류:", error);
+            //console.error("날짜 변환 중 오류:", error);
             return "날짜 오류";
         }
     }
@@ -195,12 +195,12 @@ export function renderDetail(container, reservation) {
 
 export function renderPaymentDetails(container, reservation) {
     if (!container) {
-        console.error("렌더링할 컨테이너가 없습니다.");
+        //console.error("렌더링할 컨테이너가 없습니다.");
         return;
     }
 
     if (!reservation || !reservation.exhibition || !reservation.payment) {
-        console.error("결제 내역 데이터가 올바르지 않습니다.", reservation);
+        //console.error("결제 내역 데이터가 올바르지 않습니다.", reservation);
         return;
     }
 
@@ -214,7 +214,7 @@ export function renderPaymentDetails(container, reservation) {
     paymentHeader.className = "payment-header";
 
     const image = document.createElement("img");
-    image.src = exhibition.imageUrl || "img/default.png";
+    image.src = exhibition.imageUrl || "img/kumho.png";
     image.alt = "전시 이미지";
     image.className = "payment-image";
     paymentHeader.appendChild(image);

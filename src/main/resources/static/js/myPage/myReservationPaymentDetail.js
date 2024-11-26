@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.querySelector('.payment-container');
 
     if (!paymentNo) {
-        console.error("PaymentNo가 없습니다.");
+        //console.error("PaymentNo가 없습니다.");
         alert("잘못된 접근입니다.");
         return;
     }

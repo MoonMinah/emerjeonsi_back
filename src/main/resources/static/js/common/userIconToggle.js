@@ -22,7 +22,7 @@ function checkLoginStatus() {
                         <li onclick="goToLogin()">로그인</li>
                     `;
             } else {
-                console.error("로그인 상태 확인 중 오류 발생:", error);
+                //console.error("로그인 상태 확인 중 오류 발생:", error);
             }
         });
 }
