@@ -119,7 +119,7 @@ body {
 }
 
 .container{
-    margin-top: 80px;
+    margin-top: 55px;
 }
 
 /* 콘텐츠 영역 */
@@ -135,7 +135,7 @@ body {
 .reservation-item {
     display: flex;
     padding: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
