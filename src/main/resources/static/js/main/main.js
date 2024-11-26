@@ -38,7 +38,7 @@ function loadData(criteria) {
             renderExhibitions(data); // 데이터 렌더링
         })
         .catch(error => {
-            console.error("Error fetching exhibitions:", error);
+            //console.error("Error fetching exhibitions:", error);
         });
 }
 
@@ -111,6 +111,6 @@ function applyFilter() {
             closeModal(); // 모달 닫기
         })
         .catch(error => {
-            console.error("Error searching exhibitions:", error);
+            //console.error("Error searching exhibitions:", error);
         });
 }

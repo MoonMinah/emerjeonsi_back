@@ -16,7 +16,7 @@ async function fetchAndRenderRefunds(page = 1, size = pageSize) {
             params: { page: page, size: size },
         });
 
-        console.log("API 응답 데이터 : " + response.data);
+        //console.log("API 응답 데이터 : " + response.data);
 
         if (response.status === 200) {
             const { reservations, totalPages, currentPage } = response.data;
@@ -78,7 +78,7 @@ async function fetchAndRenderRefunds(page = 1, size = pageSize) {
                     detailButton.className = "refund-detail-btn";
                     detailButton.textContent = "상세내역";
                     detailButton.addEventListener("click", () => {
-                        console.log('상세내역 클릭, PaymentNo:', refund.payment.paymentNo);
+                        //console.log('상세내역 클릭, PaymentNo:', refund.payment.paymentNo);
                         window.location.href = `/user/myPage/refundsDetail?paymentNo=${refund.payment.paymentNo}`;
                     });
                     buttonContainer.appendChild(detailButton);
@@ -98,7 +98,7 @@ async function fetchAndRenderRefunds(page = 1, size = pageSize) {
             renderPagination(totalPages, currentPage);
         }
     } catch (error) {
-        console.error('환불 목록 가져오기 오류:', error);
+        //console.error('환불 목록 가져오기 오류:', error);
         refundsContainer.innerHTML = `<p>환불 목록을 가져오는 데 실패했습니다.</p>`;
     }
 }

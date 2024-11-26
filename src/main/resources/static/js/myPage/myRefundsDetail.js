@@ -82,7 +82,7 @@ async function fetchAndRenderRefundDetail(container, paymentNo) {
             params: { paymentNo }
         });
 
-        console.log("응답 데이터:", response.data); // 확인용 로그 추가
+        //console.log("응답 데이터:", response.data); // 확인용 로그 추가
 
         if (response.status === 200) {
             const refundDetail = response.data;
@@ -91,7 +91,7 @@ async function fetchAndRenderRefundDetail(container, paymentNo) {
             container.innerHTML = '<p>환불 상세 정보를 가져오는 데 실패했습니다.</p>';
         }
     } catch (error) {
-        console.error("환불 상세 내역 가져오기 실패:", error);
+        //console.error("환불 상세 내역 가져오기 실패:", error);
         container.innerHTML = '<p>환불 상세 정보를 가져오는 데 실패했습니다.</p>';
     }
 }
@@ -99,7 +99,7 @@ async function fetchAndRenderRefundDetail(container, paymentNo) {
 // URL에서 paymentNo 파라미터 가져오기
 const urlParams = new URLSearchParams(window.location.search);
 const paymentNo = urlParams.get('paymentNo');
-console.log("paymentNo : " + paymentNo);
+//console.log("paymentNo : " + paymentNo);
 
 // 렌더링 대상 컨테이너
 const detailContainer = document.getElementById("detail-container");

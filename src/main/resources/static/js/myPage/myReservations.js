@@ -33,7 +33,7 @@ function fetchPage(page) {
             updatePagination(data.totalPages, currentPage); // 페이지네이션 업데이트
         },
         error => {
-            console.error("페이지 데이터 가져오기 오류:", error);
+            //console.error("페이지 데이터 가져오기 오류:", error);
             container.textContent = ""; // 기존 컨테이너 초기화
             const errorMessage = document.createElement("p");
             errorMessage.textContent = "데이터를 가져오는 중 오류가 발생했습니다.";
@@ -85,13 +85,13 @@ function updatePagination(totalPages, currentPage) {
 
 // 상세내역 보기 버튼 클릭 시 호출되는 함수
 function showDetails(reservationNo) {
-    console.log("상세내역 클릭됨, 예약 번호:", reservationNo);
+    //console.log("상세내역 클릭됨, 예약 번호:", reservationNo);
     window.location.href = `/user/myPage/reservationDetails?reservationNo=${reservationNo}`;
 }
 
 // 결제내역 보기 버튼 클릭 시 호출되는 함수
 function showPaymentDetails(paymentNo) {
-    console.log("결제내역 클릭됨, 결제 번호:", paymentNo);
+    //console.log("결제내역 클릭됨, 결제 번호:", paymentNo);
     window.location.href = `/user/myPage/reservationPaymentDetails?paymentNo=${paymentNo}`;
 }
 

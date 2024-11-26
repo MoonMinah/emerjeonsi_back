@@ -19,7 +19,7 @@
 </div>
 <div class="refund-container">
     <div class="refund-header">
-        <img id="refund-image" src="img/default.png" alt="전시 이미지" class="refund-image">
+        <img id="refund-image" src="/img/kumho.png" alt="전시 이미지" class="refund-image">
         <div class="refund-info">
             <h3 id="exhibition-title">제목 없음</h3>
             <p id="exhibition-institution">기관 정보 없음</p>

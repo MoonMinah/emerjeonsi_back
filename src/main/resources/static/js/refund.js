@@ -9,12 +9,12 @@ function fetchRefundData() {
     axios.get(`/api/user/myPage/refund`, { params: { paymentNo } })
         .then(response => {
             const data = response.data;
-            console.log("환불 데이터:", data);
+            //console.log("환불 데이터:", data);
 
 
             // 전시 정보 렌더링
             const exhibition = data.exhibition;
-            document.getElementById('refund-image').src = exhibition.imageUrl || 'img/default.png';
+            document.getElementById('refund-image').src = exhibition.imageUrl || 'img/kumho.png';
             document.getElementById('exhibition-title').textContent = exhibition.title || '제목 없음';
             document.getElementById('exhibition-institution').textContent = exhibition.cntcInsttNm || '기관 정보 없음';
             document.getElementById('exhibition-period').textContent = `${exhibition.startPeriod} ~ ${exhibition.endPeriod}` || '기간 없음';
@@ -39,7 +39,7 @@ function fetchRefundData() {
             });
         })
         .catch(error => {
-            console.error("환불 데이터 가져오기 실패:", error);
+            //console.error("환불 데이터 가져오기 실패:", error);
             alert("환불 데이터를 가져오는 중 오류가 발생했습니다.");
         });
 }
@@ -64,13 +64,13 @@ function confirmRefund(paymentNo, reservationNo, paymentUid, paymentPrice) {
 
 // 환불 처리 함수
 function processRefund(paymentNo, reservationNo, paymentUid, paymentPrice) {
-    console.log("환불 진행 시작 - paymentNo:", paymentNo, "reservationNo:", reservationNo, "paymentUid:", paymentUid, "paymentPrice:", paymentPrice);
+    //console.log("환불 진행 시작 - paymentNo:", paymentNo, "reservationNo:", reservationNo, "paymentUid:", paymentUid, "paymentPrice:", paymentPrice);
 
     axios.post('/api/user/myPage/processRefund', {
-        paymentNo,                 // 숫자 그대로 전달
-        reservationNo,             // 숫자 그대로 전달
+        paymentNo,
+        reservationNo,
         imp_uid: paymentUid,
-        amount: paymentPrice       // 숫자 그대로 전달
+        amount: paymentPrice
     })
         .then(response => {
             Swal.fire({
@@ -86,7 +86,7 @@ function processRefund(paymentNo, reservationNo, paymentUid, paymentPrice) {
             });
         })
         .catch(error => {
-            console.error("환불 요청 실패:", error);
+            //console.error("환불 요청 실패:", error);
             Swal.fire({
                 title: '환불 실패',
                 text: '환불 요청 처리 중 문제가 발생했습니다.',
