@@ -81,26 +81,45 @@
     </resultMap>
     <!-- 사용자 번호에 따른 환불 목록 조회 쿼리 -->
     <select id="getRefundsByUserNo" resultMap="reservationResultMap" parameterType="int">
+        WITH RankedRefunds AS (
         SELECT
-        MAX(ex.exhibitionNo) AS exhibitionNo, MAX(ex.title) AS title, MAX(ex.cntcInsttNm) AS cntcInsttNm,
-        MAX(ex.issuedDate) AS issuedDate, MAX(ex.description) AS description, MAX(ex.imageUrl) AS imageUrl,
-        MAX(ex.viewCount) AS viewCount, MAX(ex.eventSite) AS eventSite, MAX(ex.contactPoint) AS contactPoint,
-        MAX(ex.startPeriod) AS startPeriod, MAX(ex.endPeriod) AS endPeriod,
-        rm.reservationNo, rm.userNo, rm.exhibitionNo, rm.reservationPrice, rm.reservationQuantity, rm.reservationStatus,
-        pm.paymentNo, pm.paymentUid, pm.paymentMethod, pm.paymentStatus, pm.paymentPrice, pm.paymentDate,
-        MAX(ph.refundAmount) AS refundAmount, MAX(ph.paymentEventTimestamp) AS paymentEventTimestamp
+        ex.exhibitionNo,
+        ex.title,
+        ex.cntcInsttNm,
+        ex.issuedDate,
+        ex.description,
+        ex.imageUrl,
+        ex.viewCount,
+        ex.eventSite,
+        ex.contactPoint,
+        ex.startPeriod,
+        ex.endPeriod,
+        rm.reservationNo,
+        rm.userNo,
+        rm.reservationPrice,
+        rm.reservationQuantity,
+        rm.reservationStatus,
+        pm.paymentNo,
+        pm.paymentUid,
+        pm.paymentMethod,
+        pm.paymentStatus,
+        pm.paymentPrice,
+        pm.paymentDate,
+        ph.refundAmount,
+        ph.paymentEventTimestamp,
+        ROW_NUMBER() OVER (PARTITION BY rm.reservationNo ORDER BY ph.paymentEventTimestamp DESC) AS row_num
         FROM tb_exhibitions_master ex
         JOIN tb_reservations_master rm ON ex.exhibitionNo = rm.exhibitionNo
         JOIN tb_payments_master pm ON rm.reservationNo = pm.reservationNo
         JOIN tb_payments_history ph ON pm.paymentNo = ph.paymentNo
-        JOIN tb_users_master um ON um.userNo = rm.userNo
         WHERE rm.userNo = #{userNo}
         AND pm.paymentStatus = '환불'
         AND rm.reservationStatus = '취소'
-        GROUP BY
-        rm.reservationNo, rm.userNo, rm.exhibitionNo, rm.reservationPrice, rm.reservationQuantity, rm.reservationStatus,
-        pm.paymentNo, pm.paymentUid, pm.paymentMethod, pm.paymentStatus, pm.paymentPrice, pm.paymentDate
-        ORDER BY rm.reservationNo DESC
+        )
+        SELECT *
+        FROM RankedRefunds
+        WHERE row_num = 1
+        ORDER BY reservationNo DESC
         LIMIT #{offset}, #{size};
     </select>
     <!-- 사용자 번호에 따른 환불 목록 총 개수 조회 -->

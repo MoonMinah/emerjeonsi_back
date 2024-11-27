@@ -203,7 +203,6 @@ button {
     font-size: 1em;
     cursor: pointer;
 }
-
 .button:hover {
     background-color: #ff3333;
 }
