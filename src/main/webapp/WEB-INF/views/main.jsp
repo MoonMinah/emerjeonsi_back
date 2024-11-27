@@ -17,7 +17,7 @@
         <input type="text" placeholder="검색" onclick="checkFilter()"/>
         <span class="filter-icon" onclick="settingModal()">⚙️</span>
     </div>
-<%--    <a href="/user/myPage/myReservations">👤</a>--%>
+    <%--    <a href="/user/myPage/myReservations">👤</a>--%>
     <div class="user-menu-container">
         <span class="user-icon" onclick="toggleMenu()">👤</span>
         <ul class="user-menu" id="userMenu">

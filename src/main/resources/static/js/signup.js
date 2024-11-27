@@ -16,7 +16,7 @@ document.getElementById('signUpForm').addEventListener('submit', function (event
     // Axios를 이용하여 회원가입 진행
     axios.post('/api/signup', data)
         .then(response => {
-            alert('회원가입이 완료되었습니다.');
+            // alert('회원가입이 완료되었습니다.');
             window.location.href = '/login';
         })
         .catch(error => {
