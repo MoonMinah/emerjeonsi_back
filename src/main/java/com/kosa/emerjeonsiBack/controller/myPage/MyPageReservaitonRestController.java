@@ -2,6 +2,7 @@ package com.kosa.emerjeonsiBack.controller.myPage;
 
 import com.kosa.emerjeonsiBack.dto.Reservation;
 import com.kosa.emerjeonsiBack.dto.User;
+import com.kosa.emerjeonsiBack.dto.social.CustomOAuth2User;
 import com.kosa.emerjeonsiBack.service.ReservationService;
 import com.kosa.emerjeonsiBack.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +35,16 @@ public class MyPageReservaitonRestController {
 
     private User getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            // userId를 사용하여 데이터베이스에서 유저 정보 가져오기
-            return userService.selectUserByUserId(userDetails.getUsername());
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof CustomOAuth2User) {
+                CustomOAuth2User customOAuth2User = (CustomOAuth2User) principal;
+                return userService.selectUserByUserId(customOAuth2User.getName());
+            }
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                return userService.selectUserByUserId(userDetails.getUsername());
+            }
         }
         return null;
     }

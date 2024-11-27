@@ -10,6 +10,7 @@
     <title>나의 환불 목록</title>
     <link rel="stylesheet" href="/css/myPageRefunds.css" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 

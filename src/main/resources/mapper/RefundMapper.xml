@@ -94,7 +94,7 @@
         JOIN tb_payments_master pm ON rm.reservationNo = pm.reservationNo
         JOIN tb_payments_history ph ON pm.paymentNo = ph.paymentNo
         JOIN tb_users_master um ON um.userNo = rm.userNo
-        WHERE rm.userNo = 6
+        WHERE rm.userNo = #{userNo}
         AND pm.paymentStatus = '환불'
         AND rm.reservationStatus = '취소'
         GROUP BY
